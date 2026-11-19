@@ -422,6 +422,17 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 .bp:hover{border-color:var(--brass-lt)}
 .bp[aria-pressed=true]{background:var(--red);border-color:var(--red)}
 .bp:focus-visible{outline:2px solid var(--brass-lt);outline-offset:2px}
+
+.tones{display:flex;gap:6px;align-items:center}
+.tone{all:unset;cursor:pointer;width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--rule);transition:transform .2s,box-shadow .2s}
+.tone:hover{transform:scale(1.12)}
+.tone[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--red)}
+.tone:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.demo svg{animation:demoIn .6s ease}
+@keyframes demoIn{from{opacity:0;transform:scale(1.03)}}
+.demo .eye{transform-box:fill-box;transform-origin:center;animation:blink 5.5s infinite}
+@keyframes blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.08)}}
+@media (prefers-reduced-motion:reduce){ .demo .eye,.demo svg{animation:none} }
 </style>
 </head>
 <body class="no-js">
@@ -588,6 +599,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
               <button type="button" data-model="girl">Demo girl</button>
               <button type="button" data-model="photo">My photos</button>
             </div>
+            <div class="tones" id="toneRow" role="group" aria-label="Demo skin tone"></div>
             <span class="spin-ready" id="spinReady">0/4 angles</span>
           </div>
           <div class="stage" id="stage" tabindex="0" aria-label="Style preview. Drag to move the selected style; scroll, pinch or use plus and minus to resize; arrow keys to nudge.">
@@ -950,30 +962,63 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   const COLORS = [['Jet', '#141110'], ['Espresso', '#2b1d14'], ['Chestnut', '#5a3a22'], ['Auburn', '#7a3b1f'], ['Honey', '#a8743a'], ['Blonde', '#d2b07a'], ['Silver', '#9c9a96'], ['Platinum', '#e8e1d3']];
   const ANG = ['Front', 'Right', 'Back', 'Left'];
 
-  const demoFace = kind => {
-    const g = kind === 'girl';
-    const sk = g ? ['#f3cfb0', '#cf9a78', '#d9a483'] : ['#e0b28a', '#b47b54', '#bf875f'];
+  const TONES = [
+    ['Light', '#f7d9c2', '#d6a283', '#e4b393', '#4a2f20'],
+    ['Medium', '#e6b78f', '#b47b54', '#c48b62', '#3a2618'],
+    ['Tan', '#c98f62', '#90593a', '#a66c45', '#2a1a10'],
+    ['Deep', '#93603f', '#5a3522', '#6d432b', '#1c110b']
+  ];
+  const demoFace = (kind, tone = 1) => {
+    const g = kind === 'girl', id = kind + tone;
+    const [, hi, lo, mid, hairc] = TONES[tone];
+    const ex = g ? 56 : 54, dark = shade(lo, -.25);
     const head = g ? 'M56 100 C56 60 76 47 100 47 C124 47 144 60 144 100 C144 128 134 150 120 161 C113 166 106 168 100 168 C94 168 87 166 80 161 C66 150 56 128 56 100Z'
                    : 'M54 100 C54 60 74 47 100 47 C126 47 146 60 146 100 C146 130 138 150 124 160 C116 166 108 168 100 168 C92 168 84 166 76 160 C62 150 54 130 54 100Z';
-    const ex = g ? 56 : 54;
-    const eye = cx => `<ellipse cx="${cx}" cy="104" rx="6.5" ry="3.6" fill="#fff"/><circle cx="${cx + .5}" cy="104" r="2.8" fill="#3b2a1e"/><circle cx="${cx + 1.3}" cy="103.2" r=".8" fill="#fff"/>`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">` +
-      `<defs><radialGradient id="dk-${kind}" cx=".45" cy=".38" r=".75"><stop offset="0" stop-color="${sk[0]}"/><stop offset="1" stop-color="${sk[1]}"/></radialGradient>` +
-      `<radialGradient id="db-${kind}" cx=".5" cy=".35" r=".8"><stop offset="0" stop-color="#f6ecd6"/><stop offset="1" stop-color="#d6c196"/></radialGradient></defs>` +
-      `<rect width="200" height="200" fill="url(#db-${kind})"/>` +
-      `<path d="M86 140 L86 170 C93 176 107 176 114 170 L114 140Z" fill="${sk[2]}"/>` +
-      (g ? `<path d="M24 200 C28 178 58 168 82 164 C88 176 112 176 118 164 C142 168 172 178 176 200Z" fill="#a3242a"/>`
-         : `<path d="M22 200 C26 176 56 166 84 162 L116 162 C144 166 174 176 178 200Z" fill="#1f2a44"/><path d="M86 162 L100 180 L114 162Z" fill="#f4ead5"/>`) +
-      `<ellipse cx="${ex}" cy="108" rx="7" ry="12" fill="${sk[2]}"/><ellipse cx="${200 - ex}" cy="108" rx="7" ry="12" fill="${sk[2]}"/>` +
-      (g ? `<circle cx="${ex}" cy="123" r="2.6" fill="#d4b26a"/><circle cx="${200 - ex}" cy="123" r="2.6" fill="#d4b26a"/>` : '') +
-      `<path d="${head}" fill="url(#dk-${kind})"/>` +
-      (g ? `<path d="M74 94 Q83 88 91 93" stroke="#4a2f20" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M109 93 Q117 88 126 94" stroke="#4a2f20" stroke-width="2" fill="none" stroke-linecap="round"/>`
-         : `<path d="M73 95 Q82 90 91 94" stroke="#3a2618" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M109 94 Q118 90 127 95" stroke="#3a2618" stroke-width="3.4" fill="none" stroke-linecap="round"/>`) +
-      eye(82) + eye(118) +
-      (g ? `<path d="M75 102 Q82 98 89 102" stroke="#2a1a12" stroke-width="1.6" fill="none"/><path d="M111 102 Q118 98 125 102" stroke="#2a1a12" stroke-width="1.6" fill="none"/><ellipse cx="74" cy="122" rx="8" ry="4" fill="#e07a7a" opacity=".22"/><ellipse cx="126" cy="122" rx="8" ry="4" fill="#e07a7a" opacity=".22"/>` : '') +
-      `<path d="M100 106 C99 113 96 118 94 121 C97 124 103 124 106 121" stroke="${sk[1]}" stroke-width="1.8" fill="none" stroke-linecap="round"/>` +
-      (g ? `<path d="M89 136 Q95 132 100 134.5 Q105 132 111 136 Q100 144 89 136Z" fill="#b5525a"/>`
-         : `<path d="M90 137 Q100 141 110 137" stroke="#8a4a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>`) +
+    const iris = g ? ['#7fa36b', '#3e5f34'] : ['#8a5a32', '#3e2814'];
+    const eye = (cx, side) => `<g class="eye"><path d="M${cx - 8} 104 Q${cx} 97.5 ${cx + 8} 104 Q${cx} 108.6 ${cx - 8} 104Z" fill="#faf5ee"/>` +
+      `<clipPath id="ec-${id}-${cx}"><path d="M${cx - 8} 104 Q${cx} 97.5 ${cx + 8} 104 Q${cx} 108.6 ${cx - 8} 104Z"/></clipPath>` +
+      `<g clip-path="url(#ec-${id}-${cx})"><circle cx="${cx + .4}" cy="103.6" r="3.7" fill="url(#ir-${id})"/><circle cx="${cx + .4}" cy="103.6" r="1.7" fill="#120c08"/><circle cx="${cx + 1.6}" cy="102.4" r="1" fill="#fff"/><path d="M${cx - 9} 101 Q${cx} 97 ${cx + 9} 101 L${cx + 9} 103 Q${cx} 100 ${cx - 9} 103Z" fill="${dark}" opacity=".18"/></g>` +
+      `<path d="M${cx - 8.5} 103.8 Q${cx} 96.8 ${cx + 8.5} 103.8" stroke="#2a1810" stroke-width="${g ? 2 : 1.5}" fill="none" stroke-linecap="round"/>` +
+      (g ? `<path d="M${cx + side * 8.3} 103.5 l${side * 3.2} -2.4" stroke="#2a1810" stroke-width="1.5" stroke-linecap="round"/>` + [2.5, 4.6, 6.6].map(o => `<path d="M${cx + side * o} ${99.4 + o * .38} l${side * (.6 + o * .18)} -1.7" stroke="#2a1810" stroke-width=".6" stroke-linecap="round"/>`).join('') : '') +
+      `</g><path d="M${cx - 7} 100.4 Q${cx} 95.4 ${cx + 7} 100.4" stroke="${dark}" stroke-width="1" fill="none" opacity=".35"/>` +
+      `<path d="M${cx - 6} 106.4 Q${cx} 109.2 ${cx + 6} 106.4" stroke="${dark}" stroke-width="1" fill="none" opacity=".25"/>`;
+    const brows = g
+      ? `<path d="M73 95 C78 89 86 88 91.5 91 L91 92.8 C85 90.8 79 91.8 73.6 96Z" fill="${hairc}"/><path d="M127 95 C122 89 114 88 108.5 91 L109 92.8 C115 90.8 121 91.8 126.4 96Z" fill="${hairc}"/>`
+      : `<path d="M71.5 95.8 C76 90.6 84 89.4 91.5 91.2 L92 94.4 C85 93 78 93.8 72.4 97.4Z" fill="${hairc}"/><path d="M128.5 95.8 C124 90.6 116 89.4 108.5 91.2 L108 94.4 C115 93 122 93.8 127.6 97.4Z" fill="${hairc}"/>`;
+    const mouth = g
+      ? `<path d="M88.5 136.5 Q94 131.5 100 134 Q106 131.5 111.5 136.5 Q100 137.6 88.5 136.5Z" fill="#a8434e"/><path d="M89.5 136.8 Q100 145.5 110.5 136.8 Q100 138.4 89.5 136.8Z" fill="#c45a66"/><ellipse cx="100" cy="140.6" rx="4" ry="1.1" fill="#fff" opacity=".35"/><path d="M88.5 136.6 Q100 138.2 111.5 136.6" stroke="#6e2a32" stroke-width=".9" fill="none"/>`
+      : `<path d="M89 137 Q94 134.2 100 135.4 Q106 134.2 111 137 Q100 138 89 137Z" fill="${shade(lo, -.1)}"/><path d="M90 137.3 Q100 143.2 110 137.3 Q100 139 90 137.3Z" fill="${shade(mid, .05)}"/><path d="M89 137 Q100 138.6 111 137" stroke="${shade(lo, -.45)}" stroke-width="1.1" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="140" rx="3.5" ry=".9" fill="#fff" opacity=".18"/>`;
+    const clothes = g
+      ? `<path d="M24 200 C28 178 58 168 82 164 C88 178 112 178 118 164 C142 168 172 178 176 200Z" fill="url(#cl-${id})"/><path d="M82 164 C88 178 112 178 118 164" stroke="#5c1216" stroke-width="1.2" fill="none" opacity=".5"/>` +
+        `<path d="M88 168 Q100 181 112 168" stroke="#d4b26a" stroke-width="1.1" fill="none"/><circle cx="100" cy="178" r="2.4" fill="#d4b26a"/>`
+      : `<path d="M22 200 C26 176 56 166 84 162 L116 162 C144 166 174 176 178 200Z" fill="url(#cl-${id})"/><path d="M86 162 L100 182 L114 162Z" fill="#f4ead5"/>` +
+        `<path d="M84 160 L100 180 L91 186 L79 166Z" fill="#ece0c8"/><path d="M116 160 L100 180 L109 186 L121 166Z" fill="#ece0c8"/><circle cx="100" cy="190" r="1.6" fill="#b8913f"/>` +
+        `<path d="M70 172 C78 180 86 190 90 200 M130 172 C122 180 114 190 110 200" stroke="#b8913f" stroke-width="1" opacity=".55" fill="none"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs>` +
+      `<radialGradient id="sk-${id}" cx=".44" cy=".36" r=".78"><stop offset="0" stop-color="${hi}"/><stop offset=".7" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></radialGradient>` +
+      `<radialGradient id="bg-${id}" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#fbf3e2"/><stop offset=".7" stop-color="#e8d7b3"/><stop offset="1" stop-color="#cdb486"/></radialGradient>` +
+      `<radialGradient id="ir-${id}" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="${iris[0]}"/><stop offset="1" stop-color="${iris[1]}"/></radialGradient>` +
+      `<linearGradient id="cl-${id}" x1="0" y1="0" x2="0" y2="1">${g ? '<stop offset="0" stop-color="#b8323a"/><stop offset="1" stop-color="#7e1a1f"/>' : '<stop offset="0" stop-color="#2c3a5c"/><stop offset="1" stop-color="#151d31"/>'}</linearGradient>` +
+      `<radialGradient id="sh-${id}"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>` +
+      `<linearGradient id="nk-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${dark}"/><stop offset=".45" stop-color="${lo}"/><stop offset="1" stop-color="${mid}"/></linearGradient></defs>` +
+      `<rect width="200" height="200" fill="url(#bg-${id})"/>` +
+      `<circle cx="100" cy="104" r="88" fill="none" stroke="#b8913f" stroke-width="1.2" opacity=".35"/><circle cx="100" cy="104" r="82" fill="none" stroke="#b8913f" stroke-width=".8" stroke-dasharray="1.5 3.5" opacity=".4"/>` +
+      `<ellipse cx="100" cy="200" rx="90" ry="14" fill="#000" opacity=".08"/>` +
+      `<path d="M86 138 L86 170 C93 177 107 177 114 170 L114 138Z" fill="url(#nk-${id})"/>` + clothes +
+      `<ellipse cx="${ex}" cy="108" rx="7.5" ry="12.5" fill="${mid}"/><ellipse cx="${200 - ex}" cy="108" rx="7.5" ry="12.5" fill="${mid}"/>` +
+      `<path d="M${ex - 1} 100 C${ex - 5} 105 ${ex - 4.5} 114 ${ex} 118" stroke="${dark}" stroke-width="1.3" fill="none" opacity=".45"/><path d="M${201 - ex} 100 C${205 - ex} 105 ${204.5 - ex} 114 ${200 - ex} 118" stroke="${dark}" stroke-width="1.3" fill="none" opacity=".45"/>` +
+      (g ? `<circle cx="${ex}" cy="123.5" r="2.8" fill="#d4b26a"/><circle cx="${200 - ex}" cy="123.5" r="2.8" fill="#d4b26a"/>` : '') +
+      `<path d="${head}" fill="url(#sk-${id})"/>` +
+      `<path d="M60 126 C66 150 84 166 100 167 C116 166 134 150 140 126 C134 146 118 159 100 160 C82 159 66 146 60 126Z" fill="${dark}" opacity=".16"/>` +
+      `<ellipse cx="97" cy="70" rx="30" ry="16" fill="url(#sh-${id})"/><ellipse cx="76" cy="121" rx="9" ry="5" fill="#fff" opacity=".07"/><ellipse cx="124" cy="121" rx="9" ry="5" fill="#fff" opacity=".07"/>` +
+      `<ellipse cx="74" cy="123" rx="9" ry="4.5" fill="#e0706f" opacity="${g ? .22 : .07}"/><ellipse cx="126" cy="123" rx="9" ry="4.5" fill="#e0706f" opacity="${g ? .22 : .07}"/>` +
+      brows + eye(82, -1) + eye(118, 1) +
+      `<path d="M96.5 99 C95.5 107 94.5 113 92.8 118.5" stroke="${dark}" stroke-width="2" fill="none" opacity=".22" stroke-linecap="round"/>` +
+      `<ellipse cx="101" cy="116.5" rx="2.6" ry="2" fill="#fff" opacity=".22"/>` +
+      `<path d="M92.5 120 C94 124.4 106 124.4 107.5 120" stroke="${dark}" stroke-width="1.5" fill="none" opacity=".55" stroke-linecap="round"/>` +
+      `<ellipse cx="96.2" cy="121.6" rx="1.7" ry="1" fill="${dark}" opacity=".5"/><ellipse cx="103.8" cy="121.6" rx="1.7" ry="1" fill="${dark}" opacity=".5"/>` +
+      `<path d="M97 126 Q100 130 103 126" stroke="${dark}" stroke-width="1" fill="none" opacity=".2"/>` +
+      mouth + `<path d="M93.5 145.5 Q100 147.5 106.5 145.5" stroke="${dark}" stroke-width="1.2" fill="none" opacity=".22"/>` +
       `</svg>`;
   };
   const MINI = `<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M30 200 C34 178 60 170 84 166 L116 166 C140 170 166 178 170 200Z" fill="#cdb78c"/><rect x="86" y="140" width="28" height="30" fill="#c99a74"/><ellipse cx="54" cy="108" rx="7" ry="12" fill="#c99a74"/><ellipse cx="146" cy="108" rx="7" ry="12" fill="#c99a74"/><path d="M54 100 C54 60 74 47 100 47 C126 47 146 60 146 100 C146 130 138 150 124 160 C116 166 108 168 100 168 C92 168 84 166 76 160 C62 150 54 130 54 100Z" fill="#e2b994"/></svg>`;
@@ -981,7 +1026,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   // ---------- State ----------
   const T0 = () => ({ x: 0, y: 0, s: 1, r: 0, f: 1 });
   const freshT = () => ({ hair: ANG.map(T0), beard: ANG.map(T0), photo: ANG.map(T0) });
-  const st = { model: 'boy', angle: 0, photos: [null, null, null, null], hair: 'pompadour', beard: 'boxed', color: '#2b1d14', target: 'hair', pick: 'hair', mode: 'adjust', opacity: 1, shape: null, t: freshT(), timer: null };
+  const st = { model: 'boy', angle: 0, photos: [null, null, null, null], hair: 'pompadour', beard: 'boxed', color: '#2b1d14', target: 'hair', pick: 'hair', mode: 'adjust', opacity: 1, shape: null, t: freshT(), timer: null, tone: 1 };
   const looks = [];
 
   const stage = $('#stage'), base = $('#base'), Lh = $('#layerHair'), Lb = $('#layerBeard');
@@ -998,7 +1043,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   function renderBase() {
     base.innerHTML = st.model === 'photo'
       ? st.photos.map((p, i) => p ? `<img alt="Your ${ANG[i].toLowerCase()} photo" src="${p}" data-a="${i}" draggable="false">` : '').join('')
-      : `<div class="demo">${demoFace(st.model)}</div>`;
+      : `<div class="demo">${demoFace(st.model, st.tone)}</div>`;
     applyT();
   }
   function renderLayers(pop) {
@@ -1053,7 +1098,13 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     $('#looks').innerHTML = looks.length ? looks.map((l, i) => `<figure class="look"><img src="${l.url}" alt="Saved look: ${l.label}"><figcaption>${l.label}</figcaption><div class="acts"><a class="tool" href="${l.url}" download="wyatts-look-${i + 1}.jpg">Download</a><button type="button" class="tool" data-rm="${i}">Remove</button></div></figure>`).join('')
       : `<div class="looks-empty">Save a few looks and they'll line up here so you can see what suits you best. Show your favourite to Alex or Woody when you come in.</div>`;
   }
+  function renderTones() {
+    $('#toneRow').innerHTML = TONES.map((t, i) => `<button type="button" class="tone" data-tone="${i}" style="background:${t[2]}" title="${t[0]} skin" aria-label="${t[0]} skin tone" aria-pressed="${st.tone === i}"></button>`).join('');
+  }
+  $('#toneRow').addEventListener('click', e => { const b = e.target.closest('.tone'); if (!b) return; st.tone = +b.dataset.tone; renderBase(); renderTones(); });
   function syncUI() {
+    $('#toneRow').hidden = st.model === 'photo';
+    $('#spinReady').hidden = st.model !== 'photo';
     $$('#modelSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.model === st.model));
     $$('#pickSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pick === st.pick));
     $$('#targetSeg button').forEach(b => { b.setAttribute('aria-pressed', b.dataset.target === st.target); if (b.dataset.target === 'photo') b.disabled = st.model !== 'photo'; });
@@ -1203,7 +1254,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     if (st.model === 'photo' && st.photos[a]) {
       const img = await load(st.photos[a]), sc = Math.max(N / img.naturalWidth, N / img.naturalHeight);
       x.save(); place(st.t.photo[a]); x.drawImage(img, -img.naturalWidth * sc / 2, -img.naturalHeight * sc / 2, img.naturalWidth * sc, img.naturalHeight * sc); x.restore();
-    } else x.drawImage(await load(svgURL(demoFace(st.model))), 0, 0, N, N);
+    } else x.drawImage(await load(svgURL(demoFace(st.model, st.tone))), 0, 0, N, N);
     for (const [k, list] of [['beard', BEARD], ['hair', HAIR]]) {
       if (k === 'beard' && a === 2) continue;
       const s = styleSVG(list, st[k]); if (!s) continue;
@@ -1226,7 +1277,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   $('#looks').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { looks.splice(+b.dataset.rm, 1); renderLooks(); } });
 
   // ---------- Init ----------
-  renderSwatches(); renderStyles(); renderBase(); renderLayers(); renderAngles(); renderLooks(); syncUI();
+  renderTones(); renderSwatches(); renderStyles(); renderBase(); renderLayers(); renderAngles(); renderLooks(); syncUI();
 })();
 </script>
 <script>
