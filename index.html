@@ -369,6 +369,7 @@ input[type=range]{accent-color:var(--red);width:100%}
 .look .acts{display:flex;gap:6px}
 .look .tool{padding:.45em .6em;font-size:.64rem}
 .looks-empty{grid-column:1/-1;color:var(--muted);font-size:.9rem;border:1.5px dashed rgba(29,26,22,.3);padding:20px;text-align:center}
+.file-in{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0);pointer-events:none}
 .toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:var(--navy);color:var(--cream);padding:10px 16px;border-radius:8px;font-size:.86rem;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:90;border:1px solid var(--brass);max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
@@ -628,13 +629,14 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
           <div>
             <h3 class="lab-h">1 · Your photos</h3>
             <div class="upload-row">
-              <button type="button" class="tool primary" id="btnUpload"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</button>
-              <button type="button" class="tool" id="btnSelfie"><svg width="16" height="16"><use href="#i-camera"/></svg>Take selfie</button>
+              <label class="tool primary" id="btnUpload" for="fileIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</label>
+              <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-camera"/></svg>Take selfie</label>
             </div>
+            <p class="tip">You can also drag a photo onto the preview, or paste one (Ctrl/⌘+V).</p>
             <p class="privacy">🔒 Your photos stay on your device. Nothing is uploaded or stored.</p>
             <p class="tip">For a 360° view, fill the <b>Front, Right, Back and Left</b> slots under the preview, then hit <b>360° spin</b> and drag to turn your head.</p>
-            <input type="file" id="fileIn" accept="image/*" hidden>
-            <input type="file" id="selfieIn" accept="image/*" capture="user" hidden>
+            <input type="file" id="fileIn" class="file-in" accept="image/*,.heic,.heif" tabindex="-1">
+            <input type="file" id="selfieIn" class="file-in" accept="image/*" capture="user" tabindex="-1">
           </div>
           <div>
             <h3 class="lab-h">2 · Face shape <small>optional</small></h3>
@@ -1149,18 +1151,47 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 
   let pendingAngle = 0;
   function openUpload(a, selfie) { pendingAngle = a; (selfie ? $('#selfieIn') : $('#fileIn')).click(); }
-  function addPhoto(file, a) {
-    if (!file || !file.type.startsWith('image/')) { toast('Please choose an image file'); return; }
-    if (st.photos[a]) URL.revokeObjectURL(st.photos[a]);
-    st.photos[a] = URL.createObjectURL(file);
-    if (a !== 0) ['hair', 'beard'].forEach(k => { st.t[k][a] = { ...st.t[k][0] }; });
+  const IMG_EXT = /\.(jpe?g|png|gif|webp|avif|bmp|heic|heif)$/i;
+  // Decode, fix orientation and shrink big phone photos so they load fast and save reliably.
+  const readPhoto = file => new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const max = 1400, sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(img.naturalWidth * sc); cv.height = Math.round(img.naturalHeight * sc);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url);
+      try { res(cv.toDataURL('image/jpeg', .9)); } catch (e) { rej(e); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src = url;
+  });
+  async function addPhoto(file, a) {
+    if (!file) return;
+    if (!(file.type.startsWith('image/') || IMG_EXT.test(file.name || ''))) { toast('That file isn\'t a photo. Please choose a JPG or PNG'); return; }
+    toast('Loading your photo…');
+    let data;
+    try { data = await readPhoto(file); }
+    catch (e) {
+      toast(/hei[cf]/i.test(file.type + file.name) ? 'This browser can\'t open iPhone HEIC photos. Use Safari, or set Camera → Formats → Most Compatible, or upload a screenshot' : 'Sorry, that photo couldn\'t be opened. Try a JPG or PNG');
+      return;
+    }
+    st.photos[a] = data;
+    if (a !== 0 && st.photos.filter(Boolean).length > 1) ['hair', 'beard'].forEach(k => { st.t[k][a] = { ...st.t[k][0] }; });
     st.model = 'photo'; st.angle = a;
     renderBase(); renderLayers(); renderAngles(); syncUI();
     toast(nPhotos() >= 2 ? '360° ready. Hit "360° spin" and drag to turn' : 'Photo added. Drag the style into place');
   }
   ['#fileIn', '#selfieIn'].forEach(id => $(id).addEventListener('change', e => { addPhoto(e.target.files[0], pendingAngle); e.target.value = ''; }));
-  $('#btnUpload').onclick = () => { const empty = st.photos.findIndex(p => !p); openUpload(st.model === 'photo' && !st.photos[st.angle] ? st.angle : empty < 0 ? st.angle : empty); };
-  $('#btnSelfie').onclick = () => openUpload(0, true);
+  const nextSlot = () => { const empty = st.photos.findIndex(p => !p); return st.model === 'photo' && !st.photos[st.angle] ? st.angle : empty < 0 ? st.angle : empty; };
+  // Labels open the picker natively; just record which angle the photo is for.
+  $('#btnUpload').addEventListener('click', () => { pendingAngle = nextSlot(); });
+  $('#btnSelfie').addEventListener('click', () => { pendingAngle = 0; });
+  ['#btnUpload', '#btnSelfie'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $(id).click(); } }));
+  document.addEventListener('paste', e => {
+    const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith('image/'));
+    if (f) { e.preventDefault(); addPhoto(f, nextSlot()); $('#style-lab').scrollIntoView({ behavior: 'smooth' }); }
+  });
   $('#emptyUpload').onclick = () => openUpload(st.angle);
   stage.addEventListener('dragover', e => { e.preventDefault(); });
   stage.addEventListener('drop', e => { e.preventDefault(); addPhoto(e.dataTransfer.files[0], st.model === 'photo' ? st.angle : 0); });
