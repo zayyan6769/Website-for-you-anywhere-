@@ -434,6 +434,23 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 .demo .eye{transform-box:fill-box;transform-origin:center;animation:blink 5.5s infinite}
 @keyframes blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.08)}}
 @media (prefers-reduced-motion:reduce){ .demo .eye,.demo svg{animation:none} }
+
+.cam{position:absolute;inset:0;z-index:6;background:#000;overflow:hidden;cursor:default}
+.cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam video.mirror{transform:scaleX(-1)}
+.cam-guide{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cam-top{position:absolute;top:0;left:0;right:0;padding:10px 12px 18px;background:linear-gradient(rgba(0,0,0,.65),transparent);color:#fff;font-size:.82rem;display:grid;gap:2px;text-align:center}
+.cam-top b{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-lt)}
+.cam-count{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-size:5rem;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.5);pointer-events:none}
+.cam-bar{position:absolute;left:0;right:0;bottom:0;padding:14px 12px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+.cam-btn{all:unset;cursor:pointer;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.5em .85em;border:1.5px solid rgba(255,255,255,.65);border-radius:999px;justify-self:start}
+.cam-btn[aria-pressed=true]{background:var(--brass);border-color:var(--brass)}
+.cam-btn:focus-visible,.cam-shot:focus-visible{outline:2px solid var(--brass-lt);outline-offset:3px}
+.cam-side{justify-self:end;display:flex;gap:6px}
+.cam-shot{all:unset;cursor:pointer;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.35),inset 0 0 0 3px #1f2a44;transition:transform .15s}
+.cam-shot:active{transform:scale(.9)}
+.cam.flash::after{content:"";position:absolute;inset:0;background:#fff;animation:camflash .4s ease forwards;pointer-events:none}
+@keyframes camflash{to{opacity:0}}
 </style>
 </head>
 <body class="no-js">
@@ -611,7 +628,18 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
             </div>
             <div class="stage-badge" id="stageBadge">Front</div>
             <div class="empty" id="stageEmpty" hidden>
-              <div><svg width="40" height="40"><use href="#i-camera"/></svg><p>No <b id="stageEmptyAngle">front</b> photo yet.</p><button type="button" class="tool primary" id="emptyUpload">Add photo</button></div>
+              <div><svg width="40" height="40"><use href="#i-camera"/></svg><p>No <b id="stageEmptyAngle">front</b> photo yet.</p><div class="upload-row" style="justify-content:center"><button type="button" class="tool primary" data-cam>Live camera</button><label class="tool" id="emptyUpload" for="fileIn" tabindex="0" role="button">Upload</label></div></div>
+            </div>
+            <div class="cam" id="cam" hidden>
+              <video id="camVideo" playsinline muted autoplay></video>
+              <svg class="cam-guide" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="105" rx="48" ry="62" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="5 4" opacity=".85"/></svg>
+              <div class="cam-top"><b id="camStep">Front photo (1/4)</b><span id="camPrompt">Look straight at the camera</span></div>
+              <div class="cam-count" id="camCount" aria-live="assertive"></div>
+              <div class="cam-bar">
+                <button type="button" class="cam-btn" id="camClose">Done</button>
+                <button type="button" class="cam-shot" id="camShot" aria-label="Take photo"></button>
+                <div class="cam-side"><button type="button" class="cam-btn" id="camTimer" aria-pressed="false">⏱ 3s</button><button type="button" class="cam-btn" id="camFlip" aria-label="Switch camera">⟲</button></div>
+              </div>
             </div>
             <div class="stage-hint" id="stageHint">Drag to move · Scroll or pinch to resize</div>
           </div>
@@ -629,12 +657,13 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
           <div>
             <h3 class="lab-h">1 · Your photos</h3>
             <div class="upload-row">
-              <label class="tool primary" id="btnUpload" for="fileIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</label>
-              <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-camera"/></svg>Take selfie</label>
+              <button type="button" class="tool primary" data-cam><svg width="16" height="16"><use href="#i-camera"/></svg>Live camera</button>
+              <label class="tool" id="btnUpload" for="fileIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</label>
+              <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-camera"/></svg>Phone camera</label>
             </div>
             <p class="tip">You can also drag a photo onto the preview, or paste one (Ctrl/⌘+V).</p>
             <p class="privacy">🔒 Your photos stay on your device. Nothing is uploaded or stored.</p>
-            <p class="tip">For a 360° view, fill the <b>Front, Right, Back and Left</b> slots under the preview, then hit <b>360° spin</b> and drag to turn your head.</p>
+            <p class="tip">For a 360° view, tap <b>Live camera</b>: it walks you through <b>front, right, back and left</b> shots (use the 3s timer or a friend for the back). Then hit <b>360° spin</b> and drag to turn your head.</p>
             <input type="file" id="fileIn" class="file-in" accept="image/*,.heic,.heif" tabindex="-1">
             <input type="file" id="selfieIn" class="file-in" accept="image/*" capture="user" tabindex="-1">
           </div>
@@ -1087,7 +1116,8 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   function renderAngles() {
     $('#angles').innerHTML = ANG.map((n, i) => {
       const p = st.photos[i];
-      return `<button type="button" class="angle${p ? ' has' : ''}" data-a="${i}" aria-pressed="${st.model === 'photo' && st.angle === i}" aria-label="${n} photo${p ? '' : ' (add)'}"><span class="th"${p ? ` style="background-image:url('${p}')"` : ''}>${p ? '' : '<svg><use href="#i-plus"/></svg>'}</span>${n}</button>`;
+      const open = p ? `<button type="button" class="angle has"` : `<label for="fileIn" tabindex="0" role="button" class="angle"`;
+      return `${open} data-a="${i}" aria-pressed="${st.model === 'photo' && st.angle === i}" aria-label="${n} photo${p ? '' : ' (add)'}"><span class="th"${p ? ` style="background-image:url('${p}')"` : ''}>${p ? '' : '<svg><use href="#i-plus"/></svg>'}</span>${n}${p ? '</button>' : '</label>'}`;
     }).join('');
     const n = nPhotos();
     $('#spinReady').textContent = n >= 2 ? `${n}/4 angles · 360° ready` : `${n}/4 angles`;
@@ -1151,35 +1181,38 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 
   let pendingAngle = 0;
   function openUpload(a, selfie) { pendingAngle = a; (selfie ? $('#selfieIn') : $('#fileIn')).click(); }
-  const IMG_EXT = /\.(jpe?g|png|gif|webp|avif|bmp|heic|heif)$/i;
-  // Decode, fix orientation and shrink big phone photos so they load fast and save reliably.
-  const readPhoto = file => new Promise((res, rej) => {
-    const url = URL.createObjectURL(file), img = new Image();
-    img.onload = () => {
-      const max = 1400, sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
-      const cv = document.createElement('canvas');
-      cv.width = Math.round(img.naturalWidth * sc); cv.height = Math.round(img.naturalHeight * sc);
-      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-      URL.revokeObjectURL(url);
-      try { res(cv.toDataURL('image/jpeg', .9)); } catch (e) { rej(e); }
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); };
-    img.src = url;
-  });
-  async function addPhoto(file, a) {
-    if (!file) return;
-    if (!(file.type.startsWith('image/') || IMG_EXT.test(file.name || ''))) { toast('That file isn\'t a photo. Please choose a JPG or PNG'); return; }
-    toast('Loading your photo…');
-    let data;
-    try { data = await readPhoto(file); }
+  const decode = async file => {
+    try { const b = await createImageBitmap(file, { imageOrientation: 'from-image' }); return { src: b, w: b.width, h: b.height }; }
     catch (e) {
-      toast(/hei[cf]/i.test(file.type + file.name) ? 'This browser can\'t open iPhone HEIC photos. Use Safari, or set Camera → Formats → Most Compatible, or upload a screenshot' : 'Sorry, that photo couldn\'t be opened. Try a JPG or PNG');
-      return;
+      const url = URL.createObjectURL(file);
+      try {
+        const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
+        return { src: img, w: img.naturalWidth, h: img.naturalHeight };
+      } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
     }
+  };
+  // Decode, fix orientation and shrink big phone photos so they load fast and save reliably.
+  const toJPEG = (src, w, h, mirror) => {
+    const sc = Math.min(1, 1400 / Math.max(w, h)), cv = document.createElement('canvas');
+    cv.width = Math.max(1, Math.round(w * sc)); cv.height = Math.max(1, Math.round(h * sc));
+    const x = cv.getContext('2d'); if (mirror) { x.translate(cv.width, 0); x.scale(-1, 1); }
+    x.drawImage(src, 0, 0, cv.width, cv.height);
+    return cv.toDataURL('image/jpeg', .9);
+  };
+  function setPhoto(data, a) {
     st.photos[a] = data;
     if (a !== 0 && st.photos.filter(Boolean).length > 1) ['hair', 'beard'].forEach(k => { st.t[k][a] = { ...st.t[k][0] }; });
     st.model = 'photo'; st.angle = a;
     renderBase(); renderLayers(); renderAngles(); syncUI();
+  }
+  async function addPhoto(file, a) {
+    if (!file) { toast('No photo came back from the camera. Try again, or use Live camera'); return; }
+    toast('Loading your photo…');
+    try { const d = await decode(file); setPhoto(toJPEG(d.src, d.w, d.h), a); }
+    catch (e) {
+      toast(/hei[cf]/i.test((file.type || '') + (file.name || '')) ? 'This browser can\'t open iPhone HEIC photos. Use Safari, or set Camera → Formats → Most Compatible' : 'Sorry, that file couldn\'t be opened as a photo. Try a JPG or PNG');
+      return;
+    }
     toast(nPhotos() >= 2 ? '360° ready. Hit "360° spin" and drag to turn' : 'Photo added. Drag the style into place');
   }
   ['#fileIn', '#selfieIn'].forEach(id => $(id).addEventListener('change', e => { addPhoto(e.target.files[0], pendingAngle); e.target.value = ''; }));
@@ -1188,18 +1221,58 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   $('#btnUpload').addEventListener('click', () => { pendingAngle = nextSlot(); });
   $('#btnSelfie').addEventListener('click', () => { pendingAngle = 0; });
   ['#btnUpload', '#btnSelfie'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $(id).click(); } }));
+  const cam = { stream: null, facing: 'user', timer: false, slot: 0, busy: false };
+  const PROMPTS = ['Look straight at the camera', 'Turn your head to show your RIGHT side', 'Show the BACK of your head (3s timer or a friend helps)', 'Turn your head to show your LEFT side'];
+  const camEl = $('#cam'), video = $('#camVideo');
+  const stopStream = () => { if (cam.stream) cam.stream.getTracks().forEach(t => t.stop()); cam.stream = null; video.srcObject = null; };
+  async function startStream() {
+    stopStream();
+    cam.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: cam.facing, width: { ideal: 1280 }, height: { ideal: 1280 } }, audio: false });
+    video.srcObject = cam.stream; video.classList.toggle('mirror', cam.facing === 'user');
+    try { await video.play(); } catch (e) {}
+  }
+  const camPrompt = () => { $('#camStep').textContent = `${ANG[cam.slot]} photo (${cam.slot + 1}/4)`; $('#camPrompt').textContent = PROMPTS[cam.slot]; };
+  async function openCam(slot) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Live camera isn\'t available in this viewer. Open the page in Chrome or Safari, or use Upload photo'); return; }
+    stopAuto(); cam.slot = slot;
+    camEl.hidden = false; camPrompt(); stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    try { await startStream(); }
+    catch (e) {
+      camEl.hidden = true;
+      toast(e && e.name === 'NotAllowedError' ? 'Camera access was blocked. Allow the camera for this page, then try again' : 'Couldn\'t start the camera. Try Upload photo instead');
+    }
+  }
+  const closeCam = () => { stopStream(); camEl.hidden = true; $('#camCount').textContent = ''; };
+  async function shoot() {
+    if (cam.busy || !video.videoWidth) return; cam.busy = true;
+    if (cam.timer) for (let n = 3; n > 0; n--) { $('#camCount').textContent = n; await new Promise(r => setTimeout(r, 1000)); }
+    $('#camCount').textContent = '';
+    setPhoto(toJPEG(video, video.videoWidth, video.videoHeight, cam.facing === 'user'), cam.slot);
+    camEl.classList.remove('flash'); void camEl.offsetWidth; camEl.classList.add('flash');
+    const next = [1, 2, 3, 4].map(k => (cam.slot + k) % 4).find(k => !st.photos[k]);
+    if (next === undefined) { closeCam(); toast('All 4 angles done! Hit "360° spin" and drag to turn'); }
+    else { cam.slot = next; camPrompt(); toast(`${ANG[st.angle]} saved. Next: ${ANG[next].toLowerCase()}`); }
+    cam.busy = false;
+  }
+  $$('[data-cam]').forEach(b => b.addEventListener('click', () => openCam(nextSlot())));
+  $('#camShot').addEventListener('click', shoot);
+  $('#camClose').addEventListener('click', closeCam);
+  $('#camTimer').addEventListener('click', e => { cam.timer = !cam.timer; e.currentTarget.setAttribute('aria-pressed', cam.timer); });
+  $('#camFlip').addEventListener('click', async () => { cam.facing = cam.facing === 'user' ? 'environment' : 'user'; try { await startStream(); } catch (e) { toast('Couldn\'t switch camera'); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && !camEl.hidden) closeCam(); });
   document.addEventListener('paste', e => {
     const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith('image/'));
     if (f) { e.preventDefault(); addPhoto(f, nextSlot()); $('#style-lab').scrollIntoView({ behavior: 'smooth' }); }
   });
-  $('#emptyUpload').onclick = () => openUpload(st.angle);
+  $('#emptyUpload').addEventListener('click', () => { pendingAngle = st.angle; });
+  $('#style-lab').addEventListener('keydown', e => { const l = e.target.closest('label.angle, #emptyUpload'); if (l && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); l.click(); } });
   stage.addEventListener('dragover', e => { e.preventDefault(); });
   stage.addEventListener('drop', e => { e.preventDefault(); addPhoto(e.dataTransfer.files[0], st.model === 'photo' ? st.angle : 0); });
 
   $('#angles').addEventListener('click', e => {
     const b = e.target.closest('.angle'); if (!b) return;
     const i = +b.dataset.a;
-    if (!st.photos[i]) { openUpload(i); return; }
+    if (!st.photos[i]) { pendingAngle = i; return; } // the label opens the picker itself
     if (st.model !== 'photo') { st.angle = i; setModel('photo'); } else setAngle(i, i > st.angle ? 1 : -1);
   });
   $('#modelSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setModel(b.dataset.model); });
@@ -1244,7 +1317,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y), ang = (a, b) => Math.atan2(b.y - a.y, b.x - a.x);
   const begin = () => { const c = cur(); start = { v: c ? { ...c } : null, pts: [...ptrs.values()].map(p => ({ ...p })), sx: [...ptrs.values()][0]?.x }; };
   stage.addEventListener('pointerdown', e => {
-    if (e.target.closest('button, input, label')) return;
+    if (e.target.closest('button, input, label') || !camEl.hidden) return;
     stopAuto(); stage.classList.add('touched', 'dragging');
     stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); begin();
   });
@@ -1265,7 +1338,7 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   });
   const end = e => { ptrs.delete(e.pointerId); if (!ptrs.size) { stage.classList.remove('dragging'); start = null; } else begin(); };
   ['pointerup', 'pointercancel'].forEach(ev => stage.addEventListener(ev, end));
-  stage.addEventListener('wheel', e => { if (st.mode === 'spin') return; const v = cur(); if (!v) return; e.preventDefault(); v.s = Math.min(3, Math.max(.3, v.s * (e.deltaY < 0 ? 1.05 : .95))); stage.classList.add('touched'); applyT(); }, { passive: false });
+  stage.addEventListener('wheel', e => { if (st.mode === 'spin' || !camEl.hidden) return; const v = cur(); if (!v) return; e.preventDefault(); v.s = Math.min(3, Math.max(.3, v.s * (e.deltaY < 0 ? 1.05 : .95))); stage.classList.add('touched'); applyT(); }, { passive: false });
   stage.addEventListener('keydown', e => {
     if (st.mode === 'spin' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.preventDefault(); step(e.key === 'ArrowRight' ? 1 : -1); return; }
     const v = cur(); if (!v) return;
