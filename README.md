@@ -7,10 +7,24 @@ A one-page, static website concept for Wyatt's Barbershop (East Austin, TX).
 - Set the real Booksy profile link in the `BOOKSY_URL` constant near the bottom of `index.html`
 - Replace the `.ph` placeholder blocks with real photos when available
 
-## Style Lab (virtual try-on)
-- Demo guy / demo girl models, or upload your own photo (or take a selfie on mobile)
-- 15 hairstyles, 8 beard styles, 8 colours plus a custom colour picker
-- Drag to move, scroll/pinch to resize, two-finger rotate, flip, blend sliders
-- 360° view: add Front / Right / Back / Left photos, then spin by dragging or auto-rotate
-- Face-shape picker flags styles that suit you; save looks to compare and download
-- Runs fully in the browser — photos never leave the device
+## AI Style Lab
+Customers add a photo (live camera, upload or phone camera), type the cut they want
+("skin fade, short textured top"), and an AI image model returns the same photo with
+only the hair changed. Drag across the photo to compare before/after; every result is
+saved below to compare, download or book.
+
+How it works
+- `index.html` sends a 1024px square JPEG + the request to `/api/style`.
+- `netlify/functions/style.mjs` adds strict "change only the hair" instructions and
+  calls Google's Gemini image model (`gemini-2.5-flash-image`). The API key stays on the server.
+- Nothing is stored; the photo goes only to Gemini to make the preview.
+- Cost: about $0.04 per generated look (Gemini API pricing, Nov 2026). Set a budget alert in Google Cloud.
+
+Setup (Netlify)
+1. Create a Gemini API key at https://aistudio.google.com/apikey (billing enabled).
+2. Deploy this repo on Netlify (publish directory `.`; `netlify.toml` is included).
+3. In Netlify → Site configuration → Environment variables, add `GEMINI_API_KEY`.
+   Optional: `ALLOWED_ORIGIN` (e.g. `https://yourdomain.com`) to block other sites,
+   `GEMINI_IMAGE_MODEL` to switch models.
+4. Redeploy. Opening `index.html` straight from a computer or phone can't reach the AI;
+   the page says so in the chat.

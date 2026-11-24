@@ -294,38 +294,12 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;ba
 .seg button{all:unset;cursor:pointer;padding:.5em 1em;border-radius:999px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:background .25s,color .25s}
 .seg button[aria-pressed=true]{background:var(--navy);color:var(--cream)}
 .seg button:disabled{opacity:.35;cursor:not-allowed}
-.seg button:focus-visible,.tool:focus-visible,.style:focus-visible,.chip:focus-visible,.sw:focus-visible,.angle:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-.spin-ready{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.seg button:focus-visible,.tool:focus-visible,.chip:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 .stage{position:relative;aspect-ratio:1;width:100%;margin:14px 0;overflow:hidden;border:2px solid var(--navy);background:#e9dcc0;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;box-shadow:8px 8px 0 var(--brass);perspective:900px}
 .stage:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
-.stage.dragging{cursor:grabbing}
-.stage.spin{cursor:ew-resize}
-.stage .inner{position:absolute;inset:0}
-.stage.turn .inner{animation:turn .55s cubic-bezier(.3,.7,.3,1)}
-@keyframes turn{40%{transform:rotateY(var(--turn,12deg)) scale(.97)}}
-.base,.layer{position:absolute;inset:0}
-.base>*{position:absolute;inset:0;width:100%;height:100%}
-.base svg{width:100%;height:100%}
-.base img{object-fit:cover;opacity:0;transition:opacity .5s ease,transform .35s cubic-bezier(.2,.7,.2,1);pointer-events:none}
-.base img.on{opacity:1}
-.layer{pointer-events:none;transform-origin:50% 50%;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .35s;filter:drop-shadow(0 2px 2px rgba(0,0,0,.28))}
-.layer svg{width:100%;height:100%}
-.stage.dragging .layer,.stage.dragging .base img{transition:opacity .35s}
-.layer.pop svg{animation:pop .5s cubic-bezier(.2,.9,.3,1.25)}
 @keyframes pop{from{opacity:0;transform:translateY(-5%) scale(.94)}}
-.stage.before .layer{opacity:0!important}
-.stage-badge{position:absolute;top:10px;left:10px;background:var(--red);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:3px;pointer-events:none}
-.stage-hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(31,42,68,.88);color:var(--cream);font-size:.72rem;letter-spacing:.04em;padding:6px 12px;border-radius:999px;pointer-events:none;transition:opacity .6s;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
-.stage.touched .stage-hint{opacity:0}
 .empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:var(--paper);color:var(--muted);padding:20px;z-index:2}
 .empty svg{margin:0 auto 6px;color:var(--navy)}
-.angles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.angle{all:unset;cursor:pointer;display:grid;gap:4px;justify-items:center;font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.angle .th{width:100%;aspect-ratio:1;border:1.5px dashed rgba(29,26,22,.35);display:grid;place-items:center;background:var(--paper) center/cover no-repeat;transition:border-color .2s,transform .25s}
-.angle:hover .th{transform:translateY(-2px)}
-.angle.has .th{border-style:solid}
-.angle[aria-pressed=true] .th{border:2px solid var(--red);transform:translateY(-3px)}
-.angle .th svg{width:22px;height:22px;opacity:.55}
 .tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .tool{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;gap:6px;align-items:center;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.65em .95em;border:1.5px solid var(--navy);border-radius:var(--radius);color:var(--navy);background:var(--paper);transition:background .2s,color .2s,transform .15s}
 .tool:hover,.tool[aria-pressed=true]{background:var(--navy);color:var(--cream)}
@@ -339,28 +313,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;ba
 .upload-row{display:flex;gap:8px;flex-wrap:wrap}
 .tip,.privacy{font-size:.84rem;color:var(--muted);margin:8px 0 0}
 .privacy{font-weight:600;color:#2f6b45}
-.styles{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;max-height:360px;overflow:auto;padding:2px}
-.style{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:grid;gap:4px;text-align:center;font-size:.68rem;font-weight:600;line-height:1.2;color:var(--ink);padding:6px;border:1.5px solid var(--rule);border-radius:var(--radius);background:var(--cream);transition:border-color .2s,transform .2s,box-shadow .2s}
-.style:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(31,42,68,.12)}
-.style[aria-pressed=true]{border-color:var(--red);box-shadow:inset 0 0 0 1.5px var(--red)}
-.style .mini{position:relative;aspect-ratio:1;background:#efe2c6;border-radius:4px;overflow:hidden}
-.style .mini svg{position:absolute;inset:0;width:100%;height:100%}
-.style.suits::after{content:"✓ Suits you";position:absolute;top:3px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#2f8a4a;color:#fff;font-size:.52rem;padding:2px 5px;border-radius:3px;letter-spacing:.04em}
-.group-label{grid-column:1/-1;font-size:.64rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:4px}
-.swatches{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
-.sw{all:unset;cursor:pointer;width:28px;height:28px;border-radius:50%;border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--rule);transition:transform .2s,box-shadow .2s}
-.sw:hover{transform:scale(1.1)}
-.sw[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--red);transform:scale(1.12)}
-.sw.custom{position:relative;overflow:hidden;background:conic-gradient(#e33,#ee3,#3e3,#3ee,#33e,#e3e,#e33)}
-.sw.custom input{position:absolute;inset:-10px;opacity:0;cursor:pointer;width:50px;height:50px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{all:unset;cursor:pointer;font-size:.76rem;font-weight:600;padding:.4em .9em;border:1.5px solid var(--rule);border-radius:999px;transition:all .2s;text-transform:capitalize}
 .chip:hover{border-color:var(--brass)}
 .chip[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#fff}
-.sliders{display:grid;gap:10px}
-.sliders label{display:grid;grid-template-columns:62px 1fr 46px;align-items:center;gap:10px;font-size:.8rem;font-weight:600}
-.sliders output{font-size:.75rem;color:var(--muted);text-align:right}
-input[type=range]{accent-color:var(--red);width:100%}
 .looks{margin-top:44px}
 .looks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:10px}
 .look{margin:0;background:var(--paper);border:1px solid var(--rule);padding:8px;animation:pop .5s cubic-bezier(.2,.9,.3,1.25)}
@@ -402,7 +358,6 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 .perks{margin-top:16px}
 .menu{padding:clamp(20px,4vw,36px)}
 .item{padding:12px 0}
-.styles{max-height:250px}
 .panel-lab{gap:18px}
 .looks{margin-top:28px}
 .gallery{grid-auto-rows:150px}
@@ -424,16 +379,6 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 .bp[aria-pressed=true]{background:var(--red);border-color:var(--red)}
 .bp:focus-visible{outline:2px solid var(--brass-lt);outline-offset:2px}
 
-.tones{display:flex;gap:6px;align-items:center}
-.tone{all:unset;cursor:pointer;width:22px;height:22px;border-radius:50%;border:2px solid var(--paper);box-shadow:0 0 0 1.5px var(--rule);transition:transform .2s,box-shadow .2s}
-.tone:hover{transform:scale(1.12)}
-.tone[aria-pressed=true]{box-shadow:0 0 0 2.5px var(--red)}
-.tone:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-.demo svg{animation:demoIn .6s ease}
-@keyframes demoIn{from{opacity:0;transform:scale(1.03)}}
-.demo .eye{transform-box:fill-box;transform-origin:center;animation:blink 5.5s infinite}
-@keyframes blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.08)}}
-@media (prefers-reduced-motion:reduce){ .demo .eye,.demo svg{animation:none} }
 
 .cam{position:absolute;inset:0;z-index:6;background:#000;overflow:hidden;cursor:default}
 .cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -451,6 +396,39 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 .cam-shot:active{transform:scale(.9)}
 .cam.flash::after{content:"";position:absolute;inset:0;background:#fff;animation:camflash .4s ease forwards;pointer-events:none}
 @keyframes camflash{to{opacity:0}}
+/* ===== AI Style Lab ===== */
+.ai-stage{background:#1d1a16;cursor:default;touch-action:pan-y}
+.ai-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.after{position:absolute;inset:0;clip-path:inset(0 0 0 50%)}
+.after.sweep{transition:clip-path .85s cubic-bezier(.6,0,.2,1)}
+.cmp-handle{position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 8px rgba(0,0,0,.4);pointer-events:none;transition:left .85s cubic-bezier(.6,0,.2,1)}
+.stage:active .cmp-handle{transition:none}
+.cmp-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--red);color:#fff;font-size:.6rem;letter-spacing:.1em;padding:8px 10px;border-radius:999px;border:2px solid #fff;white-space:nowrap}
+.cmp-tags{position:absolute;inset:auto 10px 10px;display:flex;justify-content:space-between;pointer-events:none}
+.cmp-tags span{background:rgba(31,42,68,.85);color:var(--cream);font-size:.64rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:3px}
+.ai-stage .empty b{color:var(--navy);font-size:1.05rem}
+.ai-busy{position:absolute;inset:0;z-index:5;display:grid;place-content:center;justify-items:center;gap:10px;background:rgba(31,42,68,.55);color:#fff;text-align:center;backdrop-filter:blur(2px)}
+.ai-busy svg{animation:snip 1s ease-in-out infinite alternate}
+.ai-busy p{margin:0;font-weight:600;letter-spacing:.04em;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.scan{position:absolute;left:0;right:0;height:30%;top:-30%;background:linear-gradient(transparent,rgba(212,178,106,.55),transparent);animation:scan 1.8s linear infinite}
+@keyframes scan{to{top:100%}}
+@keyframes snip{from{transform:rotate(-12deg)}to{transform:rotate(12deg) scale(1.08)}}
+.chat{display:grid;gap:8px;max-height:300px;overflow:auto;padding:12px;background:var(--cream);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:10px}
+.msg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:.9rem;line-height:1.45;animation:pop .35s ease}
+.msg.ai{justify-self:start;background:var(--paper);border:1px solid var(--rule);border-bottom-left-radius:3px}
+.msg.user{justify-self:end;background:var(--navy);color:var(--cream);border-bottom-right-radius:3px}
+.msg.err{background:#fbe9e7;border-color:#e3b5ae;color:#7e1a1f}
+.msg-thumb{all:unset;cursor:pointer;display:block;margin-bottom:6px}
+.msg-thumb img{width:120px;height:120px;object-fit:cover;border-radius:6px;border:2px solid var(--brass);display:block}
+.ask{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.ask textarea{font:inherit;font-size:.95rem;padding:10px 12px;border:1.5px solid var(--rule);border-radius:var(--radius);background:#fff;resize:vertical;min-height:46px;color:var(--ink)}
+.ask textarea:focus{outline:2px solid var(--brass);border-color:var(--brass)}
+.ask .tool{align-self:stretch;justify-content:center}
+.keep{display:flex;gap:8px;align-items:flex-start;font-size:.82rem;color:var(--muted);margin-top:10px;cursor:pointer}
+.keep input{accent-color:var(--red);margin-top:3px}
+#quick .chip{text-transform:none;font-size:.74rem}
+.look.on{outline:2px solid var(--red)}
+.look-view{all:unset;cursor:pointer;display:block}
 </style>
 </head>
 <body class="no-js">
@@ -605,105 +583,89 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     <div class="wrap">
       <div class="sec-head reveal">
         <div class="eyebrow">Try Before You Buzz</div>
-        <h2 id="lab-title">The Style Lab</h2>
-        <p>Not sure what suits you? Start with a demo model or upload your own photos (even a full 360° set), then try on cuts, beards and colours before you sit in the chair.</p>
+        <h2 id="lab-title">AI Style Lab</h2>
+        <p>Add a photo, tell our AI the cut you want, and see it on your own head. Only your hair changes, so you know what you're asking for before you sit in the chair.</p>
         <div class="ornament"><svg><use href="#i-scissors"/></svg></div>
       </div>
       <div class="lab-grid">
         <div class="lab-viewer reveal left">
-          <div class="tabs-row">
-            <div class="seg" id="modelSeg" role="group" aria-label="Choose a model">
-              <button type="button" data-model="boy">Demo guy</button>
-              <button type="button" data-model="girl">Demo girl</button>
-              <button type="button" data-model="photo">My photos</button>
+          <div class="stage ai-stage" id="stage" tabindex="0" aria-label="Your photo and AI preview. Drag or use arrow keys to compare before and after.">
+            <img id="imgBefore" alt="Your photo" hidden draggable="false">
+            <div class="after" id="afterWrap" hidden><img id="imgAfter" alt="AI preview of your new hairstyle" draggable="false"></div>
+            <div class="cmp-handle" id="cmpHandle" hidden aria-hidden="true"><span>◀ ▶</span></div>
+            <div class="cmp-tags" id="cmpTags" hidden aria-hidden="true"><span>Before</span><span>After</span></div>
+            <div class="empty" id="stageEmpty">
+              <div>
+                <svg width="44" height="44"><use href="#i-camera"/></svg>
+                <p><b>Add a photo of your face</b><br>Face the camera with your hair in view.</p>
+                <div class="upload-row" style="justify-content:center"><button type="button" class="tool primary" data-cam>Live camera</button><label class="tool" for="fileIn" tabindex="0" role="button">Upload</label></div>
+              </div>
             </div>
-            <div class="tones" id="toneRow" role="group" aria-label="Demo skin tone"></div>
-            <span class="spin-ready" id="spinReady">0/4 angles</span>
-          </div>
-          <div class="stage" id="stage" tabindex="0" aria-label="Style preview. Drag to move the selected style; scroll, pinch or use plus and minus to resize; arrow keys to nudge.">
-            <div class="inner">
-              <div class="base" id="base"></div>
-              <div class="layer" id="layerBeard"></div>
-              <div class="layer" id="layerHair"></div>
-            </div>
-            <div class="stage-badge" id="stageBadge">Front</div>
-            <div class="empty" id="stageEmpty" hidden>
-              <div><svg width="40" height="40"><use href="#i-camera"/></svg><p>No <b id="stageEmptyAngle">front</b> photo yet.</p><div class="upload-row" style="justify-content:center"><button type="button" class="tool primary" data-cam>Live camera</button><label class="tool" id="emptyUpload" for="fileIn" tabindex="0" role="button">Upload</label></div></div>
-            </div>
+            <div class="ai-busy" id="aiBusy" hidden><div class="scan"></div><svg width="42" height="42"><use href="#i-scissors"/></svg><p id="busyText">Styling your hair…</p></div>
             <div class="cam" id="cam" hidden>
               <video id="camVideo" playsinline muted autoplay></video>
-              <svg class="cam-guide" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="105" rx="48" ry="62" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="5 4" opacity=".85"/></svg>
-              <div class="cam-top"><b id="camStep">Front photo (1/4)</b><span id="camPrompt">Look straight at the camera</span></div>
+              <svg class="cam-guide" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="100" rx="50" ry="64" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="5 4" opacity=".85"/></svg>
+              <div class="cam-top"><b>Your photo</b><span>Look straight ahead with your hair inside the oval</span></div>
               <div class="cam-count" id="camCount" aria-live="assertive"></div>
               <div class="cam-bar">
-                <button type="button" class="cam-btn" id="camClose">Done</button>
+                <button type="button" class="cam-btn" id="camClose">Cancel</button>
                 <button type="button" class="cam-shot" id="camShot" aria-label="Take photo"></button>
                 <div class="cam-side"><button type="button" class="cam-btn" id="camTimer" aria-pressed="false">⏱ 3s</button><button type="button" class="cam-btn" id="camFlip" aria-label="Switch camera">⟲</button></div>
               </div>
             </div>
-            <div class="stage-hint" id="stageHint">Drag to move · Scroll or pinch to resize</div>
           </div>
-          <div class="angles" id="angles" aria-label="Photo angles for 360° view"></div>
           <div class="tools">
-            <button type="button" class="tool" id="btnSpin" aria-pressed="false"><svg width="16" height="16"><use href="#i-spin"/></svg>360° spin</button>
-            <button type="button" class="tool" id="btnAuto" aria-pressed="false">▶ Auto-rotate</button>
-            <button type="button" class="tool" id="btnBefore">Hold: before</button>
-            <button type="button" class="tool" id="btnReset">Reset</button>
-            <button type="button" class="tool primary" id="btnSave"><svg width="16" height="16"><use href="#i-save"/></svg>Save look</button>
+            <label class="tool" for="fileIn" tabindex="0" role="button" id="btnNewPhoto"><svg width="16" height="16"><use href="#i-upload"/></svg>New photo</label>
+            <button type="button" class="tool" id="btnDownload" disabled>Download</button>
+            <button type="button" class="tool primary" id="btnBookLook" disabled><svg width="16" height="16"><use href="#i-cal"/></svg>Book this look</button>
           </div>
         </div>
 
         <div class="panel-lab reveal right">
           <div>
-            <h3 class="lab-h">1 · Your photos</h3>
+            <h3 class="lab-h">1 · Your photo</h3>
             <div class="upload-row">
               <button type="button" class="tool primary" data-cam><svg width="16" height="16"><use href="#i-camera"/></svg>Live camera</button>
               <label class="tool" id="btnUpload" for="fileIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</label>
-              <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-camera"/></svg>Phone camera</label>
+              <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button">Phone camera</label>
             </div>
-            <p class="tip">You can also drag a photo onto the preview, or paste one (Ctrl/⌘+V).</p>
-            <p class="privacy">🔒 Your photos stay on your device. Nothing is uploaded or stored.</p>
-            <p class="tip">For a 360° view, tap <b>Live camera</b>: it walks you through <b>front, right, back and left</b> shots (use the 3s timer or a friend for the back). Then hit <b>360° spin</b> and drag to turn your head.</p>
+            <p class="tip">Best results: good light, look at the camera, whole head in the frame. You can also drag a photo onto the preview or paste one (Ctrl/⌘+V).</p>
             <input type="file" id="fileIn" class="file-in" accept="image/*,.heic,.heif" tabindex="-1">
             <input type="file" id="selfieIn" class="file-in" accept="image/*" capture="user" tabindex="-1">
           </div>
           <div>
-            <h3 class="lab-h">2 · Face shape <small>optional</small></h3>
-            <div class="chips" id="shapeChips"></div>
-            <p class="tip" id="shapeTip">Pick your face shape and we'll flag the styles that suit it.</p>
-          </div>
-          <div>
-            <div class="tabs-row" style="margin-bottom:10px"><h3 class="lab-h" style="margin:0">3 · Pick a style</h3>
-              <div class="seg" id="pickSeg" role="group" aria-label="Style type"><button type="button" data-pick="hair">Hair</button><button type="button" data-pick="beard">Beard</button></div></div>
-            <div class="styles" id="hairList"></div>
-            <div class="styles" id="beardList" hidden></div>
-          </div>
-          <div>
-            <h3 class="lab-h">4 · Colour</h3>
-            <div class="swatches" id="swatches"></div>
-          </div>
-          <div>
-            <div class="tabs-row" style="margin-bottom:10px"><h3 class="lab-h" style="margin:0">5 · Fine-tune</h3>
-              <div class="seg" id="targetSeg" role="group" aria-label="What to adjust"><button type="button" data-target="hair">Hair</button><button type="button" data-target="beard">Beard</button><button type="button" data-target="photo">Photo</button></div></div>
-            <div class="sliders">
-              <label>Size <input type="range" id="sSize" min="40" max="250"><output id="oSize"></output></label>
-              <label>Rotate <input type="range" id="sRot" min="-45" max="45"><output id="oRot"></output></label>
-              <label>Blend <input type="range" id="sBlend" min="30" max="100"><output id="oBlend"></output></label>
+            <h3 class="lab-h">2 · Tell the AI what you want</h3>
+            <div class="chat" id="chat" aria-live="polite">
+              <div class="msg ai">Hi! Add your photo, then describe the cut you want, like <i>“skin fade with a short textured top”</i>. I'll change your hair and keep everything else the same.</div>
             </div>
-            <div class="tools"><button type="button" class="tool" id="btnFlip">⇋ Flip</button><button type="button" class="tool" id="btnCenter">Center</button></div>
+            <div class="chips" id="quick" aria-label="Quick ideas">
+              <button type="button" class="chip">Skin fade, short textured top</button>
+              <button type="button" class="chip">Classic taper with a side part</button>
+              <button type="button" class="chip">Buzz cut</button>
+              <button type="button" class="chip">Mid fade with curly top</button>
+              <button type="button" class="chip">Slick back, short sides</button>
+              <button type="button" class="chip">Clean up my beard</button>
+            </div>
+            <form class="ask" id="askForm">
+              <label class="sr" for="askIn">Describe your haircut</label>
+              <textarea id="askIn" rows="2" maxlength="300" placeholder="e.g. Low fade, keep some length on top, push it back"></textarea>
+              <button class="tool primary" id="askBtn" type="submit">Send</button>
+            </form>
+            <label class="keep"><input type="checkbox" id="keepEdit"> Keep editing my last result (for tweaks like “a bit shorter”)</label>
+            <p class="privacy">🔒 Your photo is sent only to Google's Gemini AI to make your preview. This site doesn't store it.</p>
           </div>
         </div>
       </div>
 
       <div class="looks reveal">
-        <div class="tabs-row"><h3 class="lab-h" style="margin:0">Saved looks: compare side by side</h3><a class="btn sm" href="#book-step">Book this look</a></div>
+        <div class="tabs-row"><h3 class="lab-h" style="margin:0">Your AI looks: compare side by side</h3><a class="btn sm" href="#book-step">Book this look</a></div>
         <div class="looks-grid" id="looks"></div>
       </div>
 
       <div class="book-step reveal" id="book-step">
         <div>
           <div class="lab-h" style="color:var(--brass-lt)">Last step · Book your chair</div>
-          <p class="book-look">Your look: <b id="bookLook">Pompadour</b></p>
+          <p class="book-look">Your look: <b id="bookLook">Not picked yet. Try the AI Style Lab above</b></p>
           <div class="barber-pick" role="group" aria-label="Choose your barber">
             <button type="button" class="bp" data-barber="Alex" aria-pressed="false"><i>A</i><span>Alex<small>Owner · Barber</small></span></button>
             <button type="button" class="bp" data-barber="Woody" aria-pressed="false"><i>W</i><span>Woody<small>Barber</small></span></button>
@@ -908,321 +870,159 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   }
 })();
 
-/* ===== Style Lab ===== */
+/* ===== AI Style Lab ===== */
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   if (!$('#style-lab')) return;
-  let UID = 0;
 
-  const shade = (hex, amt) => {
-    let c = hex.replace('#', ''); if (c.length === 3) c = [...c].map(x => x + x).join('');
-    const n = parseInt(c, 16), t = amt < 0 ? 0 : 255, p = Math.abs(amt);
-    const ch = v => Math.round((t - v) * p + v);
-    return '#' + ((1 << 24) + (ch(n >> 16) << 16) + (ch(n >> 8 & 255) << 8) + ch(n & 255)).toString(16).slice(1);
-  };
+  // Server endpoint that calls the AI (see netlify/functions/style.mjs). The API key never reaches the browser.
+  const AI_ENDPOINT = '/api/style';
+  const SIZE = 1024; // photos are centre-cropped to a 1024px square so before/after line up
 
-  // Wrap a style in an SVG with colour gradients, a strand-grain texture and soft edges.
-  const wrap = (f, c, grain = .35) => {
-    const u = 'w' + (++UID), D = shade(c, -.45), L = shade(c, .35);
-    const body = f({ F: `url(#g${u})`, A: `url(#a${u})`, D, L, c });
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs>` +
-      `<linearGradient id="g${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${L}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${D}"/></linearGradient>` +
-      `<linearGradient id="a${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".95"/><stop offset=".55" stop-color="${c}" stop-opacity=".45"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient>` +
-      `<filter id="t${u}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="1.5 .5" numOctaves="2" seed="4" result="n"/>` +
-      `<feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 ${grain} 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="g"/>` +
-      `<feGaussianBlur in="SourceGraphic" stdDeviation=".35" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="g"/></feMerge></filter></defs>` +
-      `<g filter="url(#t${u})">${body}</g></svg>`;
-  };
-  const S = (ds, col, w = .8, o = .5) => ds.map(d => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${o}"/>`).join('');
-  const SIDES = (A, o = 1) => `<g opacity="${o}"><path d="M53 108 C50 88 56 74 68 66 L74 72 C64 82 60 96 61 112Z" fill="${A}"/><path d="M147 108 C150 88 144 74 132 66 L126 72 C136 82 140 96 139 112Z" fill="${A}"/></g>`;
-  const CREW = 'M56 92 C54 60 74 40 100 40 C126 40 146 60 144 92 C140 80 136 74 132 70 C122 64 112 67 100 65 C88 67 78 64 68 70 C64 74 60 80 56 92Z';
-  const SLICK = 'M53 104 C48 62 72 36 100 36 C128 36 152 62 147 104 C144 88 140 78 134 70 C122 60 78 60 66 70 C60 78 56 88 53 104Z';
-  const LIP = 'C122 126 110 125 100 127 C90 125 78 126 70 130';
-  const MOUTH = 'M88 137 a12 5 0 1 0 24 0 a12 5 0 1 0 -24 0Z';
-  const curls = (F, D, { rx, ry, cy, maxY, r, step, skip }) => {
-    let out = '', i = 0, row = 0;
-    for (let y = cy - ry + r * .6; y <= maxY; y += step * .82, row++) {
-      for (let x = 100 - rx + (row % 2 ? step / 2 : 0); x <= 100 + rx; x += step) {
-        i++;
-        const xx = x + ((i * 37) % 7 - 3) * .5, yy = y + ((i * 53) % 5 - 2) * .5;
-        if (((xx - 100) / rx) ** 2 + ((yy - cy) / ry) ** 2 > 1 || (skip && skip(xx, yy))) continue;
-        out += `<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${r}" fill="${F}" stroke="${D}" stroke-width=".8"/>`;
-      }
-    }
-    return out;
-  };
-
-  const HAIR = [
-    { id: 'none', name: 'No hair', g: 'all' },
-    { id: 'buzz', name: 'Buzz Cut', g: 'men', suits: ['square', 'heart'], f: ({ A }) => `<path d="M53 104 C50 68 72 44 100 44 C128 44 150 68 147 104 C144 90 140 80 134 74 C122 66 78 66 66 74 C60 80 56 90 53 104Z" fill="${A}" opacity=".85"/>`, grain: .55 },
-    { id: 'crew', name: 'Crew Cut', g: 'men', suits: ['long', 'square', 'heart'], f: ({ F, A, L }) => `${SIDES(A)}<path d="${CREW}" fill="${F}"/>` + S(['M70 66 C76 54 88 46 100 44', 'M100 64 C104 52 114 46 126 48'], L, .9, .4) },
-    { id: 'skinfade', name: 'Skin Fade', g: 'men', suits: ['round', 'square'], f: ({ F, A, L }) => `${SIDES(A, .45)}<path d="M58 88 C54 56 74 36 100 36 C126 36 146 56 142 88 C138 78 134 72 130 68 C122 62 110 64 100 62 C90 64 78 62 70 68 C64 72 60 78 58 88Z" fill="${F}"/>` + S(['M74 62 L80 44', 'M90 60 L94 40', 'M106 60 L108 40', 'M122 62 L120 44'], L, .9, .35) },
-    { id: 'pompadour', name: 'Pompadour', g: 'men', suits: ['round', 'square', 'heart'], f: ({ F, A, L }) => `${SIDES(A, .8)}<path d="M58 90 C50 60 58 30 92 22 C120 16 148 28 150 54 C151 66 146 80 142 90 C139 80 135 74 130 70 C128 62 122 58 110 58 C96 58 80 60 70 68 C64 74 60 82 58 90Z" fill="${F}"/>` + S(['M70 60 C82 36 112 26 140 40', 'M76 64 C90 44 116 36 142 52', 'M66 70 C76 50 100 40 128 46'], L, 1.1, .45) },
-    { id: 'quiff', name: 'Textured Crop', g: 'men', suits: ['round', 'long', 'heart'], f: ({ F, A, L }) => `${SIDES(A, .75)}<path d="M55 98 C50 60 72 36 100 36 C130 36 152 60 145 98 C142 86 138 78 133 74 L128 78 L124 72 L118 79 L112 72 L106 80 L100 72 L94 80 L88 72 L82 79 L76 72 L71 78 L66 74 C61 80 57 88 55 98Z" fill="${F}"/>` + S(['M80 50 L76 70', 'M96 44 L94 70', 'M112 46 L112 70', 'M126 52 L128 70'], L, .9, .4) },
-    { id: 'slick', name: 'Slick Back', g: 'men', suits: ['round', 'heart'], f: ({ F, L }) => `<path d="${SLICK}" fill="${F}"/>` + S(['M70 66 C76 50 90 42 104 40', 'M84 62 C90 48 102 42 116 42', 'M100 60 C106 48 118 44 130 48', 'M116 62 C122 52 132 50 140 58'], L, 1, .5) },
-    { id: 'sidepart', name: 'Side Part', g: 'men', suits: ['round', 'square', 'long', 'heart'], f: ({ F, D, L }) => `<path d="M53 104 C46 60 72 32 104 32 C136 34 154 62 147 104 C144 88 140 78 136 72 C124 62 98 60 80 64 C66 70 58 84 53 104Z" fill="${F}"/>` + S(['M80 64 C82 52 86 42 92 34'], D, 1.6, .7) + S(['M86 60 C100 48 124 46 140 62', 'M90 52 C104 42 124 42 138 52', 'M76 62 C70 70 62 82 58 94'], L, 1, .45) },
-    { id: 'curly', name: 'Curly Top', g: 'men', suits: ['square', 'long', 'oval'], f: ({ F, A, D }) => `${SIDES(A, .7)}<path d="${CREW}" fill="${D}"/>` + curls(F, D, { rx: 44, ry: 34, cy: 72, maxY: 70, r: 6.5, step: 9 }) },
-    { id: 'long', name: 'Long Flow', g: 'men', suits: ['square', 'long'], f: ({ F, L }) => `<path d="M50 112 C44 62 66 30 100 30 C134 30 156 62 150 112 C150 140 154 168 148 190 L134 188 C140 160 140 128 138 100 C134 80 120 64 100 64 C80 64 66 80 62 100 C60 128 60 160 66 188 L52 190 C46 168 50 140 50 112Z" fill="${F}"/>` + S(['M70 70 C62 100 62 150 60 186', 'M132 70 C140 100 140 150 140 186', 'M88 36 C70 48 62 70 58 104', 'M112 36 C130 48 140 70 144 104'], L, 1, .35) },
-    { id: 'bun', name: 'Man Bun', g: 'men', suits: ['round', 'square'], f: ({ F, D, L }) => `<circle cx="100" cy="32" r="15" fill="${F}" stroke="${D}" stroke-width=".8"/><path d="${SLICK}" fill="${F}"/>` + S(['M90 44 Q100 49 110 44'], D, 2.6, .9) + S(['M70 66 C80 52 92 46 100 46', 'M130 66 C120 52 108 46 100 46'], L, 1, .45) },
-    { id: 'pixie', name: 'Pixie', g: 'women', suits: ['oval', 'heart', 'long'], f: ({ F, L }) => `<path d="M54 102 C48 62 72 38 102 38 C132 38 152 62 146 102 C143 90 139 82 134 76 C126 70 116 72 108 76 C96 82 80 86 66 84 C60 90 56 96 54 102Z" fill="${F}"/>` + S(['M130 50 C110 60 88 74 66 84', 'M140 64 C118 70 96 80 72 86', 'M110 42 C92 52 78 64 62 80'], L, 1, .45) },
-    { id: 'bob', name: 'Classic Bob', g: 'women', suits: ['oval', 'long', 'heart', 'square'], f: ({ F, D, L }) => `<path d="M46 104 C40 58 66 32 100 32 C134 32 160 58 154 104 C156 130 158 150 152 166 C144 170 136 168 132 164 C138 140 138 110 132 86 C124 72 108 66 92 70 C78 74 68 86 66 100 C62 120 62 146 68 164 C64 168 56 170 48 166 C42 150 44 130 46 104Z" fill="${F}"/>` + S(['M100 34 C80 40 66 60 62 96', 'M100 34 C120 40 136 60 140 96', 'M58 120 C56 140 56 152 56 164', 'M144 120 C146 140 146 152 146 164'], L, 1, .35) + S(['M100 34 L98 54'], D, 1.2, .6) },
-    { id: 'curtain', name: 'Curtain Bangs', g: 'women', suits: ['oval', 'square', 'long', 'heart'], f: ({ F, D, L }) => `<path d="M46 104 C40 58 66 30 100 30 C134 30 160 58 154 104 C156 136 160 162 156 184 C148 188 140 188 134 184 C138 150 140 118 134 94 C128 78 114 70 100 68 C86 70 72 78 66 94 C60 118 62 150 66 184 C60 188 52 188 44 184 C40 162 44 136 46 104Z" fill="${F}"/><path d="M100 50 C92 64 80 72 68 98 C76 90 82 86 88 84 C92 74 96 66 100 60Z" fill="${F}"/><path d="M100 50 C108 64 120 72 132 98 C124 90 118 86 112 84 C108 74 104 66 100 60Z" fill="${F}"/>` + S(['M100 32 L100 54'], D, 1.2, .6) + S(['M60 110 C56 140 58 164 56 182', 'M140 110 C144 140 142 164 144 182', 'M96 36 C76 42 62 62 58 96', 'M104 36 C124 42 138 62 142 96'], L, 1, .35) },
-    { id: 'waves', name: 'Long Waves', g: 'women', suits: ['oval', 'round', 'square', 'heart'], f: ({ F, D, L }) => `<path d="M46 104 C40 58 66 30 100 30 C134 30 160 58 154 104 C158 130 150 150 158 170 C164 186 152 198 146 200 C150 190 140 182 142 168 C146 146 140 118 134 94 C126 76 112 68 100 66 C88 68 74 76 66 94 C60 118 54 146 58 168 C60 182 50 190 54 200 C48 198 36 186 42 170 C50 150 42 130 46 104Z" fill="${F}"/>` + S(['M86 32 C84 44 82 56 80 66'], D, 1.3, .6) + S(['M56 100 C50 124 58 144 50 166 C46 178 52 188 50 196', 'M146 100 C152 124 144 144 152 166 C156 178 150 188 152 196', 'M86 34 C70 42 60 62 56 92', 'M90 36 C112 38 136 52 144 86'], L, 1.1, .4) },
-    { id: 'afro', name: 'Natural Curls', g: 'women', suits: ['oval', 'long', 'square', 'heart'], f: ({ F, D }) => `<path d="M58 150 C36 140 26 110 30 82 C34 44 64 22 100 22 C136 22 166 44 170 82 C174 110 164 140 142 150 C144 130 144 100 136 84 C126 72 112 68 100 68 C88 68 74 72 64 84 C56 100 56 130 58 150Z" fill="${D}"/>` + curls(F, D, { rx: 70, ry: 64, cy: 86, maxY: 148, r: 9, step: 12, skip: (x, y) => y > 62 && ((x - 100) / 42) ** 2 + ((y - 118) / 56) ** 2 < 1 }) }
-  ];
-
-  const BEARD = [
-    { id: 'none', name: 'Clean shave', g: 'beard' },
-    { id: 'stubble', name: 'Stubble', g: 'beard', suits: ['round', 'square', 'oval', 'long'], grain: .7, f: ({ c }) => `<path fill-rule="evenodd" fill="${c}" opacity=".34" d="M55 104 C55 146 76 172 100 174 C124 172 145 146 145 104 C143 118 138 128 130 130 ${LIP} C62 128 57 118 55 104Z ${MOUTH}"/>` },
-    { id: 'boxed', name: 'Short Boxed', g: 'beard', suits: ['round', 'oval', 'heart'], f: ({ F, L }) => `<path fill-rule="evenodd" fill="${F}" d="M54 102 C54 150 76 178 100 180 C124 178 146 150 146 102 C143 118 138 128 130 130 ${LIP} C62 128 57 118 54 102Z ${MOUTH}"/>` + S(['M66 140 C72 158 84 170 96 174', 'M134 140 C128 158 116 170 104 174', 'M60 118 C62 130 66 140 70 146', 'M140 118 C138 130 134 140 130 146'], L, .9, .35) },
-    { id: 'full', name: 'Full Beard', g: 'beard', suits: ['round', 'heart', 'oval'], f: ({ F, L }) => `<path fill-rule="evenodd" fill="${F}" d="M52 98 C50 156 72 194 100 196 C128 194 150 156 148 98 C145 116 139 126 130 129 C122 124 110 123 100 125 C90 123 78 124 70 129 C61 126 55 116 52 98Z ${MOUTH}"/>` + S(['M70 140 C74 160 84 178 96 188', 'M130 140 C126 160 116 178 104 188', 'M100 150 L100 190', 'M60 120 C60 140 66 160 76 176', 'M140 120 C140 140 134 160 124 176'], L, 1, .35) },
-    { id: 'goatee', name: 'Goatee', g: 'beard', suits: ['round', 'square', 'oval'], f: ({ F, L }) => `<path fill-rule="evenodd" fill="${F}" d="M86 126 C92 123 108 123 114 126 C118 132 118 140 116 146 C114 160 108 166 100 166 C92 166 86 160 84 146 C82 140 82 132 86 126Z ${MOUTH}"/>` + S(['M96 148 L98 162', 'M104 148 L102 162'], L, .9, .4) },
-    { id: 'chevron', name: 'Chevron Stache', g: 'beard', suits: ['long', 'oval', 'heart', 'square'], f: ({ F }) => `<path fill="${F}" d="M84 133 C86 126 94 124 100 127 C106 124 114 126 116 133 C110 131 104 131 100 133 C96 131 90 131 84 133Z"/>` },
-    { id: 'handlebar', name: 'Handlebar', g: 'beard', suits: ['oval', 'long'], f: ({ F }) => `<path fill="${F}" d="M100 127 C94 123 86 126 82 131 C78 134 72 132 70 128 C70 134 76 138 82 136 C88 134 94 132 100 132 C106 132 112 134 118 136 C124 138 130 134 130 128 C128 132 122 134 118 131 C114 126 106 123 100 127Z"/>` },
-    { id: 'chops', name: 'Mutton Chops', g: 'beard', suits: ['long', 'oval'], f: ({ F }) => `<path fill="${F}" d="M55 100 C55 126 62 142 72 150 C78 148 80 140 80 132 C72 130 64 122 62 100Z"/><path fill="${F}" d="M145 100 C145 126 138 142 128 150 C122 148 120 140 120 132 C128 130 136 122 138 100Z"/><path fill="${F}" d="M80 132 C88 126 96 125 100 128 C104 125 112 126 120 132 C112 131 106 131 100 133 C94 131 88 131 80 132Z"/>` }
-  ];
-
-  const SHAPE_TIPS = {
-    oval: 'Oval faces can pull off almost anything. Go bold.',
-    round: 'Add height on top and keep the sides tight to lengthen a round face.',
-    square: 'Soft texture or a little length balances a strong, square jaw.',
-    heart: 'Some fullness at the jaw (a beard, a bob) balances a wider forehead.',
-    long: 'Keep height down and add width at the sides for a longer face.'
-  };
-  const COLORS = [['Jet', '#141110'], ['Espresso', '#2b1d14'], ['Chestnut', '#5a3a22'], ['Auburn', '#7a3b1f'], ['Honey', '#a8743a'], ['Blonde', '#d2b07a'], ['Silver', '#9c9a96'], ['Platinum', '#e8e1d3']];
-  const ANG = ['Front', 'Right', 'Back', 'Left'];
-
-  const TONES = [
-    ['Light', '#f7d9c2', '#d6a283', '#e4b393', '#4a2f20'],
-    ['Medium', '#e6b78f', '#b47b54', '#c48b62', '#3a2618'],
-    ['Tan', '#c98f62', '#90593a', '#a66c45', '#2a1a10'],
-    ['Deep', '#93603f', '#5a3522', '#6d432b', '#1c110b']
-  ];
-  const demoFace = (kind, tone = 1) => {
-    const g = kind === 'girl', id = kind + tone;
-    const [, hi, lo, mid, hairc] = TONES[tone];
-    const ex = g ? 56 : 54, dark = shade(lo, -.25);
-    const head = g ? 'M56 100 C56 60 76 47 100 47 C124 47 144 60 144 100 C144 128 134 150 120 161 C113 166 106 168 100 168 C94 168 87 166 80 161 C66 150 56 128 56 100Z'
-                   : 'M54 100 C54 60 74 47 100 47 C126 47 146 60 146 100 C146 130 138 150 124 160 C116 166 108 168 100 168 C92 168 84 166 76 160 C62 150 54 130 54 100Z';
-    const iris = g ? ['#7fa36b', '#3e5f34'] : ['#8a5a32', '#3e2814'];
-    const eye = (cx, side) => `<g class="eye"><path d="M${cx - 8} 104 Q${cx} 97.5 ${cx + 8} 104 Q${cx} 108.6 ${cx - 8} 104Z" fill="#faf5ee"/>` +
-      `<clipPath id="ec-${id}-${cx}"><path d="M${cx - 8} 104 Q${cx} 97.5 ${cx + 8} 104 Q${cx} 108.6 ${cx - 8} 104Z"/></clipPath>` +
-      `<g clip-path="url(#ec-${id}-${cx})"><circle cx="${cx + .4}" cy="103.6" r="3.7" fill="url(#ir-${id})"/><circle cx="${cx + .4}" cy="103.6" r="1.7" fill="#120c08"/><circle cx="${cx + 1.6}" cy="102.4" r="1" fill="#fff"/><path d="M${cx - 9} 101 Q${cx} 97 ${cx + 9} 101 L${cx + 9} 103 Q${cx} 100 ${cx - 9} 103Z" fill="${dark}" opacity=".18"/></g>` +
-      `<path d="M${cx - 8.5} 103.8 Q${cx} 96.8 ${cx + 8.5} 103.8" stroke="#2a1810" stroke-width="${g ? 2 : 1.5}" fill="none" stroke-linecap="round"/>` +
-      (g ? `<path d="M${cx + side * 8.3} 103.5 l${side * 3.2} -2.4" stroke="#2a1810" stroke-width="1.5" stroke-linecap="round"/>` + [2.5, 4.6, 6.6].map(o => `<path d="M${cx + side * o} ${99.4 + o * .38} l${side * (.6 + o * .18)} -1.7" stroke="#2a1810" stroke-width=".6" stroke-linecap="round"/>`).join('') : '') +
-      `</g><path d="M${cx - 7} 100.4 Q${cx} 95.4 ${cx + 7} 100.4" stroke="${dark}" stroke-width="1" fill="none" opacity=".35"/>` +
-      `<path d="M${cx - 6} 106.4 Q${cx} 109.2 ${cx + 6} 106.4" stroke="${dark}" stroke-width="1" fill="none" opacity=".25"/>`;
-    const brows = g
-      ? `<path d="M73 95 C78 89 86 88 91.5 91 L91 92.8 C85 90.8 79 91.8 73.6 96Z" fill="${hairc}"/><path d="M127 95 C122 89 114 88 108.5 91 L109 92.8 C115 90.8 121 91.8 126.4 96Z" fill="${hairc}"/>`
-      : `<path d="M71.5 95.8 C76 90.6 84 89.4 91.5 91.2 L92 94.4 C85 93 78 93.8 72.4 97.4Z" fill="${hairc}"/><path d="M128.5 95.8 C124 90.6 116 89.4 108.5 91.2 L108 94.4 C115 93 122 93.8 127.6 97.4Z" fill="${hairc}"/>`;
-    const mouth = g
-      ? `<path d="M88.5 136.5 Q94 131.5 100 134 Q106 131.5 111.5 136.5 Q100 137.6 88.5 136.5Z" fill="#a8434e"/><path d="M89.5 136.8 Q100 145.5 110.5 136.8 Q100 138.4 89.5 136.8Z" fill="#c45a66"/><ellipse cx="100" cy="140.6" rx="4" ry="1.1" fill="#fff" opacity=".35"/><path d="M88.5 136.6 Q100 138.2 111.5 136.6" stroke="#6e2a32" stroke-width=".9" fill="none"/>`
-      : `<path d="M89 137 Q94 134.2 100 135.4 Q106 134.2 111 137 Q100 138 89 137Z" fill="${shade(lo, -.1)}"/><path d="M90 137.3 Q100 143.2 110 137.3 Q100 139 90 137.3Z" fill="${shade(mid, .05)}"/><path d="M89 137 Q100 138.6 111 137" stroke="${shade(lo, -.45)}" stroke-width="1.1" fill="none" stroke-linecap="round"/><ellipse cx="100" cy="140" rx="3.5" ry=".9" fill="#fff" opacity=".18"/>`;
-    const clothes = g
-      ? `<path d="M24 200 C28 178 58 168 82 164 C88 178 112 178 118 164 C142 168 172 178 176 200Z" fill="url(#cl-${id})"/><path d="M82 164 C88 178 112 178 118 164" stroke="#5c1216" stroke-width="1.2" fill="none" opacity=".5"/>` +
-        `<path d="M88 168 Q100 181 112 168" stroke="#d4b26a" stroke-width="1.1" fill="none"/><circle cx="100" cy="178" r="2.4" fill="#d4b26a"/>`
-      : `<path d="M22 200 C26 176 56 166 84 162 L116 162 C144 166 174 176 178 200Z" fill="url(#cl-${id})"/><path d="M86 162 L100 182 L114 162Z" fill="#f4ead5"/>` +
-        `<path d="M84 160 L100 180 L91 186 L79 166Z" fill="#ece0c8"/><path d="M116 160 L100 180 L109 186 L121 166Z" fill="#ece0c8"/><circle cx="100" cy="190" r="1.6" fill="#b8913f"/>` +
-        `<path d="M70 172 C78 180 86 190 90 200 M130 172 C122 180 114 190 110 200" stroke="#b8913f" stroke-width="1" opacity=".55" fill="none"/>`;
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs>` +
-      `<radialGradient id="sk-${id}" cx=".44" cy=".36" r=".78"><stop offset="0" stop-color="${hi}"/><stop offset=".7" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></radialGradient>` +
-      `<radialGradient id="bg-${id}" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#fbf3e2"/><stop offset=".7" stop-color="#e8d7b3"/><stop offset="1" stop-color="#cdb486"/></radialGradient>` +
-      `<radialGradient id="ir-${id}" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="${iris[0]}"/><stop offset="1" stop-color="${iris[1]}"/></radialGradient>` +
-      `<linearGradient id="cl-${id}" x1="0" y1="0" x2="0" y2="1">${g ? '<stop offset="0" stop-color="#b8323a"/><stop offset="1" stop-color="#7e1a1f"/>' : '<stop offset="0" stop-color="#2c3a5c"/><stop offset="1" stop-color="#151d31"/>'}</linearGradient>` +
-      `<radialGradient id="sh-${id}"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>` +
-      `<linearGradient id="nk-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${dark}"/><stop offset=".45" stop-color="${lo}"/><stop offset="1" stop-color="${mid}"/></linearGradient></defs>` +
-      `<rect width="200" height="200" fill="url(#bg-${id})"/>` +
-      `<circle cx="100" cy="104" r="88" fill="none" stroke="#b8913f" stroke-width="1.2" opacity=".35"/><circle cx="100" cy="104" r="82" fill="none" stroke="#b8913f" stroke-width=".8" stroke-dasharray="1.5 3.5" opacity=".4"/>` +
-      `<ellipse cx="100" cy="200" rx="90" ry="14" fill="#000" opacity=".08"/>` +
-      `<path d="M86 138 L86 170 C93 177 107 177 114 170 L114 138Z" fill="url(#nk-${id})"/>` + clothes +
-      `<ellipse cx="${ex}" cy="108" rx="7.5" ry="12.5" fill="${mid}"/><ellipse cx="${200 - ex}" cy="108" rx="7.5" ry="12.5" fill="${mid}"/>` +
-      `<path d="M${ex - 1} 100 C${ex - 5} 105 ${ex - 4.5} 114 ${ex} 118" stroke="${dark}" stroke-width="1.3" fill="none" opacity=".45"/><path d="M${201 - ex} 100 C${205 - ex} 105 ${204.5 - ex} 114 ${200 - ex} 118" stroke="${dark}" stroke-width="1.3" fill="none" opacity=".45"/>` +
-      (g ? `<circle cx="${ex}" cy="123.5" r="2.8" fill="#d4b26a"/><circle cx="${200 - ex}" cy="123.5" r="2.8" fill="#d4b26a"/>` : '') +
-      `<path d="${head}" fill="url(#sk-${id})"/>` +
-      `<path d="M60 126 C66 150 84 166 100 167 C116 166 134 150 140 126 C134 146 118 159 100 160 C82 159 66 146 60 126Z" fill="${dark}" opacity=".16"/>` +
-      `<ellipse cx="97" cy="70" rx="30" ry="16" fill="url(#sh-${id})"/><ellipse cx="76" cy="121" rx="9" ry="5" fill="#fff" opacity=".07"/><ellipse cx="124" cy="121" rx="9" ry="5" fill="#fff" opacity=".07"/>` +
-      `<ellipse cx="74" cy="123" rx="9" ry="4.5" fill="#e0706f" opacity="${g ? .22 : .07}"/><ellipse cx="126" cy="123" rx="9" ry="4.5" fill="#e0706f" opacity="${g ? .22 : .07}"/>` +
-      brows + eye(82, -1) + eye(118, 1) +
-      `<path d="M96.5 99 C95.5 107 94.5 113 92.8 118.5" stroke="${dark}" stroke-width="2" fill="none" opacity=".22" stroke-linecap="round"/>` +
-      `<ellipse cx="101" cy="116.5" rx="2.6" ry="2" fill="#fff" opacity=".22"/>` +
-      `<path d="M92.5 120 C94 124.4 106 124.4 107.5 120" stroke="${dark}" stroke-width="1.5" fill="none" opacity=".55" stroke-linecap="round"/>` +
-      `<ellipse cx="96.2" cy="121.6" rx="1.7" ry="1" fill="${dark}" opacity=".5"/><ellipse cx="103.8" cy="121.6" rx="1.7" ry="1" fill="${dark}" opacity=".5"/>` +
-      `<path d="M97 126 Q100 130 103 126" stroke="${dark}" stroke-width="1" fill="none" opacity=".2"/>` +
-      mouth + `<path d="M93.5 145.5 Q100 147.5 106.5 145.5" stroke="${dark}" stroke-width="1.2" fill="none" opacity=".22"/>` +
-      `</svg>`;
-  };
-  const MINI = `<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M30 200 C34 178 60 170 84 166 L116 166 C140 170 166 178 170 200Z" fill="#cdb78c"/><rect x="86" y="140" width="28" height="30" fill="#c99a74"/><ellipse cx="54" cy="108" rx="7" ry="12" fill="#c99a74"/><ellipse cx="146" cy="108" rx="7" ry="12" fill="#c99a74"/><path d="M54 100 C54 60 74 47 100 47 C126 47 146 60 146 100 C146 130 138 150 124 160 C116 166 108 168 100 168 C92 168 84 166 76 160 C62 150 54 130 54 100Z" fill="#e2b994"/></svg>`;
-
-  // ---------- State ----------
-  const T0 = () => ({ x: 0, y: 0, s: 1, r: 0, f: 1 });
-  const freshT = () => ({ hair: ANG.map(T0), beard: ANG.map(T0), photo: ANG.map(T0) });
-  const st = { model: 'boy', angle: 0, photos: [null, null, null, null], hair: 'pompadour', beard: 'boxed', color: '#2b1d14', target: 'hair', pick: 'hair', mode: 'adjust', opacity: 1, shape: null, t: freshT(), timer: null, tone: 1 };
-  const looks = [];
-
-  const stage = $('#stage'), base = $('#base'), Lh = $('#layerHair'), Lb = $('#layerBeard');
-  const byId = (list, id) => list.find(s => s.id === id);
-  const styleSVG = (list, id) => { const s = byId(list, id); return s && s.f ? wrap(s.f, st.color, s.grain) : ''; };
-  const tf = v => `translate(${v.x}%,${v.y}%) rotate(${v.r}deg) scale(${v.s * v.f},${v.s})`;
-  const nPhotos = () => st.photos.filter(Boolean).length;
-  const cur = () => (st.target === 'photo' && st.model !== 'photo') ? null : st.t[st.target][st.angle];
+  const st = { photo: null, looks: [], current: -1, busy: false, split: 50 };
+  const stage = $('#stage'), before = $('#imgBefore'), after = $('#imgAfter'), afterWrap = $('#afterWrap');
+  const handle = $('#cmpHandle'), chat = $('#chat'), askIn = $('#askIn');
 
   let toastT;
-  const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); };
+  const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3200); };
+  const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  // ---------- Render ----------
-  function renderBase() {
-    base.innerHTML = st.model === 'photo'
-      ? st.photos.map((p, i) => p ? `<img alt="Your ${ANG[i].toLowerCase()} photo" src="${p}" data-a="${i}" draggable="false">` : '').join('')
-      : `<div class="demo">${demoFace(st.model, st.tone)}</div>`;
-    applyT();
-  }
-  function renderLayers(pop) {
-    Lh.innerHTML = styleSVG(HAIR, st.hair);
-    Lb.innerHTML = styleSVG(BEARD, st.beard);
-    const bl = $('#bookLook'); if (bl) bl.textContent = label();
-    if (pop) { const el = pop === 'hair' ? Lh : Lb; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
-    applyT();
-  }
-  function applyT() {
-    const a = st.angle;
-    Lh.style.transform = tf(st.t.hair[a]); Lb.style.transform = tf(st.t.beard[a]);
-    Lh.style.opacity = st.opacity; Lb.style.opacity = a === 2 ? 0 : st.opacity;
-    $$('img', base).forEach(img => { const i = +img.dataset.a; img.classList.toggle('on', i === a); img.style.transform = tf(st.t.photo[i]); });
-    const missing = st.model === 'photo' && !st.photos[a];
-    $('#stageEmpty').hidden = !missing;
-    $('#stageEmptyAngle').textContent = ANG[a].toLowerCase();
-    syncSliders();
-  }
-  function syncSliders() {
-    const v = cur() || T0();
-    $('#sSize').value = Math.round(v.s * 100); $('#sRot').value = Math.round(v.r); $('#sBlend').value = Math.round(st.opacity * 100);
-    $('#oSize').textContent = Math.round(v.s * 100) + '%'; $('#oRot').textContent = Math.round(v.r) + '°'; $('#oBlend').textContent = Math.round(st.opacity * 100) + '%';
-  }
-  function renderStyles() {
-    const mk = (list, kind) => {
-      let html = '', last = '';
-      list.forEach(s => {
-        if (s.g !== last && (s.g === 'men' || s.g === 'women')) html += `<div class="group-label">${s.g === 'men' ? "Men's cuts" : "Women's cuts"}</div>`;
-        last = s.g;
-        const suits = st.shape && s.suits && (st.shape === 'oval' || s.suits.includes(st.shape));
-        html += `<button type="button" class="style${suits ? ' suits' : ''}" data-kind="${kind}" data-id="${s.id}" aria-pressed="${st[kind] === s.id}"><span class="mini">${MINI}${s.f ? wrap(s.f, st.color, s.grain) : ''}</span>${s.name}</button>`;
-      });
-      return html;
-    };
-    $('#hairList').innerHTML = mk(HAIR, 'hair');
-    $('#beardList').innerHTML = mk(BEARD, 'beard');
-  }
-  function renderAngles() {
-    $('#angles').innerHTML = ANG.map((n, i) => {
-      const p = st.photos[i];
-      const open = p ? `<button type="button" class="angle has"` : `<label for="fileIn" tabindex="0" role="button" class="angle"`;
-      return `${open} data-a="${i}" aria-pressed="${st.model === 'photo' && st.angle === i}" aria-label="${n} photo${p ? '' : ' (add)'}"><span class="th"${p ? ` style="background-image:url('${p}')"` : ''}>${p ? '' : '<svg><use href="#i-plus"/></svg>'}</span>${n}${p ? '</button>' : '</label>'}`;
-    }).join('');
-    const n = nPhotos();
-    $('#spinReady').textContent = n >= 2 ? `${n}/4 angles · 360° ready` : `${n}/4 angles`;
-  }
-  function renderSwatches() {
-    $('#swatches').innerHTML = COLORS.map(([n, c]) => `<button type="button" class="sw" style="background:${c}" data-color="${c}" title="${n}" aria-label="${n}" aria-pressed="${st.color === c}"></button>`).join('') +
-      `<label class="sw custom" title="Custom colour" aria-pressed="${!COLORS.some(c => c[1] === st.color)}"><input type="color" id="colorIn" value="${st.color}" aria-label="Custom colour"></label>`;
-  }
-  function renderLooks() {
-    $('#looks').innerHTML = looks.length ? looks.map((l, i) => `<figure class="look"><img src="${l.url}" alt="Saved look: ${l.label}"><figcaption>${l.label}</figcaption><div class="acts"><a class="tool" href="${l.url}" download="wyatts-look-${i + 1}.jpg">Download</a><button type="button" class="tool" data-rm="${i}">Remove</button></div></figure>`).join('')
-      : `<div class="looks-empty">Save a few looks and they'll line up here so you can see what suits you best. Show your favourite to Alex or Woody when you come in.</div>`;
-  }
-  function renderTones() {
-    $('#toneRow').innerHTML = TONES.map((t, i) => `<button type="button" class="tone" data-tone="${i}" style="background:${t[2]}" title="${t[0]} skin" aria-label="${t[0]} skin tone" aria-pressed="${st.tone === i}"></button>`).join('');
-  }
-  $('#toneRow').addEventListener('click', e => { const b = e.target.closest('.tone'); if (!b) return; st.tone = +b.dataset.tone; renderBase(); renderTones(); });
-  function syncUI() {
-    $('#toneRow').hidden = st.model === 'photo';
-    $('#spinReady').hidden = st.model !== 'photo';
-    $$('#modelSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.model === st.model));
-    $$('#pickSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pick === st.pick));
-    $$('#targetSeg button').forEach(b => { b.setAttribute('aria-pressed', b.dataset.target === st.target); if (b.dataset.target === 'photo') b.disabled = st.model !== 'photo'; });
-    $('#hairList').hidden = st.pick !== 'hair'; $('#beardList').hidden = st.pick !== 'beard';
-    $$('#shapeChips .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.shape === st.shape));
-    $('#shapeTip').textContent = st.shape ? SHAPE_TIPS[st.shape] : "Pick your face shape and we'll flag the styles that suit it.";
-    $('#btnSpin').setAttribute('aria-pressed', st.mode === 'spin');
-    $('#btnAuto').setAttribute('aria-pressed', !!st.timer);
-    $('#btnAuto').textContent = st.timer ? '❚❚ Stop rotate' : '▶ Auto-rotate';
-    stage.classList.toggle('spin', st.mode === 'spin');
-    $('#stageHint').textContent = st.mode === 'spin' ? 'Drag left / right to turn your head 360°' : 'Drag to move · Scroll or pinch to resize · Two fingers rotate';
-    $('#stageBadge').textContent = st.model === 'photo' ? ANG[st.angle] + (st.mode === 'spin' ? ' · 360°' : '') : (st.model === 'boy' ? 'Demo · Guy' : 'Demo · Girl');
-  }
-
-  // ---------- Actions ----------
-  function setModel(m) {
-    if (m === 'photo' && !nPhotos()) { openUpload(0); return; }
-    stopAuto();
-    st.model = m;
-    if (m !== 'photo') {
-      st.t = { ...freshT(), photo: st.t.photo };
-      if (m === 'boy') { st.hair = 'pompadour'; st.beard = 'boxed'; } else { st.hair = 'bob'; st.beard = 'none'; }
-      st.angle = 0; st.mode = 'adjust';
-      if (st.target === 'photo') st.target = 'hair';
-    } else if (!st.photos[st.angle]) st.angle = st.photos.findIndex(Boolean);
-    renderBase(); renderLayers(); renderAngles(); renderStyles(); syncUI();
-  }
-  function setAngle(i, dir = 1) {
-    if (i === st.angle) return;
-    stage.style.setProperty('--turn', (dir > 0 ? -14 : 14) + 'deg');
-    stage.classList.remove('turn'); void stage.offsetWidth; stage.classList.add('turn');
-    st.angle = i; applyT(); renderAngles(); syncUI();
-  }
-  function step(dir) {
-    const av = [0, 1, 2, 3].filter(i => st.photos[i]);
-    if (st.model !== 'photo' || av.length < 2) { toast('Add at least two angles (front, sides, back) to spin 360°'); stopAuto(); return false; }
-    let k = av.indexOf(st.angle); if (k < 0) k = 0;
-    setAngle(av[(k + dir + av.length) % av.length], dir);
-    return true;
-  }
-  function stopAuto() { if (st.timer) { clearInterval(st.timer); st.timer = null; syncUI(); } }
-
-  let pendingAngle = 0;
-  function openUpload(a, selfie) { pendingAngle = a; (selfie ? $('#selfieIn') : $('#fileIn')).click(); }
+  // ---------- Photo handling ----------
+  const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
   const decode = async file => {
     try { const b = await createImageBitmap(file, { imageOrientation: 'from-image' }); return { src: b, w: b.width, h: b.height }; }
     catch (e) {
       const url = URL.createObjectURL(file);
-      try {
-        const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
-        return { src: img, w: img.naturalWidth, h: img.naturalHeight };
-      } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
+      try { const img = await loadImg(url); return { src: img, w: img.naturalWidth, h: img.naturalHeight }; }
+      finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
     }
   };
-  // Decode, fix orientation and shrink big phone photos so they load fast and save reliably.
-  const toJPEG = (src, w, h, mirror) => {
-    const sc = Math.min(1, 1400 / Math.max(w, h)), cv = document.createElement('canvas');
-    cv.width = Math.max(1, Math.round(w * sc)); cv.height = Math.max(1, Math.round(h * sc));
-    const x = cv.getContext('2d'); if (mirror) { x.translate(cv.width, 0); x.scale(-1, 1); }
-    x.drawImage(src, 0, 0, cv.width, cv.height);
+  // Centre-crop to a square (a little above centre for portraits, where faces sit) and shrink.
+  const toSquare = (src, w, h, mirror) => {
+    const side = Math.min(w, h), sx = (w - side) / 2, sy = h > w ? (h - side) * .3 : 0;
+    const out = Math.min(SIZE, side), cv = document.createElement('canvas');
+    cv.width = cv.height = out;
+    const x = cv.getContext('2d');
+    if (mirror) { x.translate(out, 0); x.scale(-1, 1); }
+    x.drawImage(src, sx, sy, side, side, 0, 0, out, out);
     return cv.toDataURL('image/jpeg', .9);
   };
-  function setPhoto(data, a) {
-    st.photos[a] = data;
-    if (a !== 0 && st.photos.filter(Boolean).length > 1) ['hair', 'beard'].forEach(k => { st.t[k][a] = { ...st.t[k][0] }; });
-    st.model = 'photo'; st.angle = a;
-    renderBase(); renderLayers(); renderAngles(); syncUI();
+
+  function setPhoto(data) {
+    st.photo = data; st.current = -1;
+    $('#keepEdit').checked = false;
+    render();
+    addMsg('ai', 'Got your photo! Now tell me what cut you want, or tap an idea below.');
+    askIn.focus({ preventScroll: true });
   }
-  async function addPhoto(file, a) {
-    if (!file) { toast('No photo came back from the camera. Try again, or use Live camera'); return; }
+  async function addFile(file) {
+    if (!file) { toast('No photo came back. Try again, or use Live camera'); return; }
     toast('Loading your photo…');
-    try { const d = await decode(file); setPhoto(toJPEG(d.src, d.w, d.h), a); }
+    try { const d = await decode(file); setPhoto(toSquare(d.src, d.w, d.h)); toast('Photo added'); }
     catch (e) {
       toast(/hei[cf]/i.test((file.type || '') + (file.name || '')) ? 'This browser can\'t open iPhone HEIC photos. Use Safari, or set Camera → Formats → Most Compatible' : 'Sorry, that file couldn\'t be opened as a photo. Try a JPG or PNG');
+    }
+  }
+  ['#fileIn', '#selfieIn'].forEach(id => $(id).addEventListener('change', e => { addFile(e.target.files[0]); e.target.value = ''; }));
+  $('#style-lab').addEventListener('keydown', e => { const l = e.target.closest('label.tool'); if (l && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); l.click(); } });
+  stage.addEventListener('dragover', e => e.preventDefault());
+  stage.addEventListener('drop', e => { e.preventDefault(); addFile(e.dataTransfer.files[0]); });
+  document.addEventListener('paste', e => {
+    const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith('image/'));
+    if (f) { e.preventDefault(); addFile(f); $('#style-lab').scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  // ---------- Before / after view ----------
+  const setSplit = p => { st.split = Math.max(0, Math.min(100, p)); afterWrap.style.clipPath = `inset(0 0 0 ${st.split}%)`; handle.style.left = st.split + '%'; };
+  function render() {
+    const has = !!st.photo, look = st.looks[st.current];
+    $('#stageEmpty').hidden = has;
+    before.hidden = !has; if (has && before.src !== st.photo) before.src = st.photo;
+    afterWrap.hidden = handle.hidden = $('#cmpTags').hidden = !look;
+    if (look) { after.src = look.url; after.alt = 'AI preview: ' + look.prompt; }
+    $('#btnDownload').disabled = $('#btnBookLook').disabled = !look;
+  }
+  function reveal() { // sweep the divider across so the change is obvious
+    afterWrap.classList.add('sweep'); setSplit(0);
+    requestAnimationFrame(() => requestAnimationFrame(() => { setSplit(50); setTimeout(() => afterWrap.classList.remove('sweep'), 900); }));
+  }
+  let dragging = false;
+  const splitAt = e => { const r = stage.getBoundingClientRect(); setSplit((e.clientX - r.left) / r.width * 100); };
+  stage.addEventListener('pointerdown', e => { if (afterWrap.hidden || e.target.closest('button, label, input, .cam')) return; dragging = true; stage.setPointerCapture(e.pointerId); splitAt(e); });
+  stage.addEventListener('pointermove', e => { if (dragging) splitAt(e); });
+  ['pointerup', 'pointercancel'].forEach(ev => stage.addEventListener(ev, () => { dragging = false; }));
+  stage.addEventListener('keydown', e => { if (afterWrap.hidden) return; if (e.key === 'ArrowLeft') setSplit(st.split - 5); else if (e.key === 'ArrowRight') setSplit(st.split + 5); });
+
+  // ---------- Chat ----------
+  function addMsg(who, html) {
+    const d = document.createElement('div'); d.className = 'msg ' + who; d.innerHTML = html;
+    chat.appendChild(d); chat.scrollTop = chat.scrollHeight; return d;
+  }
+  const BUSY = ['Looking at your photo…', 'Picking up the clippers…', 'Blending the fade…', 'Styling the top…', 'Matching your lighting…', 'Almost done…'];
+  let busyT;
+  function setBusy(on) {
+    st.busy = on; $('#aiBusy').hidden = !on; $('#askBtn').disabled = on; askIn.disabled = on;
+    clearInterval(busyT);
+    if (on) { let i = 0; $('#busyText').textContent = BUSY[0]; busyT = setInterval(() => { i = Math.min(i + 1, BUSY.length - 1); $('#busyText').textContent = BUSY[i]; }, 2500); }
+  }
+
+  async function ask(prompt) {
+    prompt = prompt.trim().slice(0, 300);
+    if (!prompt || st.busy) return;
+    if (!st.photo) { toast('Add a photo of your face first'); addMsg('ai', 'First add a photo of your face using <b>Live camera</b> or <b>Upload photo</b>.'); return; }
+    addMsg('user', esc(prompt)); askIn.value = '';
+    if (location.protocol === 'file:') {
+      addMsg('ai err', 'The AI needs the site to be online. It works once the site is deployed with its AI key (see README). Opening the file from your phone or computer can\'t reach the AI.');
       return;
     }
-    toast(nPhotos() >= 2 ? '360° ready. Hit "360° spin" and drag to turn' : 'Photo added. Drag the style into place');
+    const base = $('#keepEdit').checked && st.looks[st.current] ? st.looks[st.current].url : st.photo;
+    setBusy(true);
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 90000);
+    try {
+      const img = await loadImg(base); // re-encode results (often PNG) to a small square JPEG
+      const res = await fetch(AI_ENDPOINT, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+        body: JSON.stringify({ image: toSquare(img, img.naturalWidth, img.naturalHeight), prompt })
+      });
+      let data = {};
+      try { data = await res.json(); } catch (e) {}
+      if (!res.ok || !data.image) throw new Error(data.error || (res.status === 404 ? 'The AI isn\'t connected on this server yet (see README).' : 'The AI couldn\'t make that look. Please try again.'));
+      st.looks.unshift({ url: data.image, prompt });
+      if (st.looks.length > 12) st.looks.pop();
+      st.current = 0; render(); reveal(); renderLooks();
+      $('#bookLook').textContent = prompt;
+      addMsg('ai', `<button type="button" class="msg-thumb"><img src="${data.image}" alt=""></button>Here's your <b>${esc(prompt)}</b>. Drag across the photo to compare. Want a tweak? Tick “Keep editing” and tell me.`);
+    } catch (e) {
+      addMsg('ai err', esc(e.name === 'AbortError' ? 'That took too long. Please try again.' : (e.message || 'Something went wrong. Please try again.')));
+    } finally { clearTimeout(timer); setBusy(false); }
   }
-  ['#fileIn', '#selfieIn'].forEach(id => $(id).addEventListener('change', e => { addPhoto(e.target.files[0], pendingAngle); e.target.value = ''; }));
-  const nextSlot = () => { const empty = st.photos.findIndex(p => !p); return st.model === 'photo' && !st.photos[st.angle] ? st.angle : empty < 0 ? st.angle : empty; };
-  // Labels open the picker natively; just record which angle the photo is for.
-  $('#btnUpload').addEventListener('click', () => { pendingAngle = nextSlot(); });
-  $('#btnSelfie').addEventListener('click', () => { pendingAngle = 0; });
-  ['#btnUpload', '#btnSelfie'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $(id).click(); } }));
-  const cam = { stream: null, facing: 'user', timer: false, slot: 0, busy: false };
-  const PROMPTS = ['Look straight at the camera', 'Turn your head to show your RIGHT side', 'Show the BACK of your head (3s timer or a friend helps)', 'Turn your head to show your LEFT side'];
+  $('#askForm').addEventListener('submit', e => { e.preventDefault(); ask(askIn.value); });
+  askIn.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(askIn.value); } });
+  $('#quick').addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) ask(c.textContent); });
+  chat.addEventListener('click', e => {
+    const t = e.target.closest('.msg-thumb'); if (!t) return;
+    const src = t.querySelector('img').src, i = st.looks.findIndex(l => l.url === src);
+    if (i >= 0) { st.current = i; render(); reveal(); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  });
+
+  // ---------- Saved looks, download, booking ----------
+  function renderLooks() {
+    $('#looks').innerHTML = st.looks.length
+      ? st.looks.map((l, i) => `<figure class="look${i === st.current ? ' on' : ''}"><button type="button" class="look-view" data-i="${i}" aria-label="Show ${esc(l.prompt)}"><img src="${l.url}" alt="AI look: ${esc(l.prompt)}"></button><figcaption>${esc(l.prompt)}</figcaption><div class="acts"><a class="tool" href="${l.url}" download="wyatts-look-${i + 1}.png">Download</a><button type="button" class="tool" data-book="${i}">Book</button></div></figure>`).join('')
+      : `<div class="looks-empty">Every look the AI makes for you lands here, so you can compare and show your favourite to the barber.</div>`;
+  }
+  const bookLook = i => { const l = st.looks[i]; if (!l) return; $('#bookLook').textContent = l.prompt; $('#book-step').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+  $('#looks').addEventListener('click', e => {
+    const v = e.target.closest('.look-view'), b = e.target.closest('[data-book]');
+    if (v) { st.current = +v.dataset.i; render(); reveal(); renderLooks(); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    if (b) bookLook(+b.dataset.book);
+  });
+  $('#btnBookLook').addEventListener('click', () => bookLook(st.current));
+  $('#btnDownload').addEventListener('click', () => { const l = st.looks[st.current]; if (!l) return; const a = document.createElement('a'); a.href = l.url; a.download = 'wyatts-look.png'; document.body.appendChild(a); a.click(); a.remove(); });
+
+  // ---------- Live camera ----------
+  const cam = { stream: null, facing: 'user', timer: false, busy: false };
   const camEl = $('#cam'), video = $('#camVideo');
   const stopStream = () => { if (cam.stream) cam.stream.getTracks().forEach(t => t.stop()); cam.stream = null; video.srcObject = null; };
   async function startStream() {
@@ -1231,157 +1031,29 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     video.srcObject = cam.stream; video.classList.toggle('mirror', cam.facing === 'user');
     try { await video.play(); } catch (e) {}
   }
-  const camPrompt = () => { $('#camStep').textContent = `${ANG[cam.slot]} photo (${cam.slot + 1}/4)`; $('#camPrompt').textContent = PROMPTS[cam.slot]; };
-  async function openCam(slot) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Live camera isn\'t available in this viewer. Open the page in Chrome or Safari, or use Upload photo'); return; }
-    stopAuto(); cam.slot = slot;
-    camEl.hidden = false; camPrompt(); stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  async function openCam() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Live camera isn\'t available here. Open the page in Chrome or Safari, or use Upload photo'); return; }
+    camEl.hidden = false; stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     try { await startStream(); }
-    catch (e) {
-      camEl.hidden = true;
-      toast(e && e.name === 'NotAllowedError' ? 'Camera access was blocked. Allow the camera for this page, then try again' : 'Couldn\'t start the camera. Try Upload photo instead');
-    }
+    catch (e) { camEl.hidden = true; toast(e && e.name === 'NotAllowedError' ? 'Camera access was blocked. Allow the camera for this page, then try again' : 'Couldn\'t start the camera. Try Upload photo instead'); }
   }
   const closeCam = () => { stopStream(); camEl.hidden = true; $('#camCount').textContent = ''; };
   async function shoot() {
     if (cam.busy || !video.videoWidth) return; cam.busy = true;
     if (cam.timer) for (let n = 3; n > 0; n--) { $('#camCount').textContent = n; await new Promise(r => setTimeout(r, 1000)); }
-    $('#camCount').textContent = '';
-    setPhoto(toJPEG(video, video.videoWidth, video.videoHeight, cam.facing === 'user'), cam.slot);
+    const data = toSquare(video, video.videoWidth, video.videoHeight, cam.facing === 'user');
     camEl.classList.remove('flash'); void camEl.offsetWidth; camEl.classList.add('flash');
-    const next = [1, 2, 3, 4].map(k => (cam.slot + k) % 4).find(k => !st.photos[k]);
-    if (next === undefined) { closeCam(); toast('All 4 angles done! Hit "360° spin" and drag to turn'); }
-    else { cam.slot = next; camPrompt(); toast(`${ANG[st.angle]} saved. Next: ${ANG[next].toLowerCase()}`); }
+    setTimeout(() => { closeCam(); setPhoto(data); }, 250);
     cam.busy = false;
   }
-  $$('[data-cam]').forEach(b => b.addEventListener('click', () => openCam(nextSlot())));
+  $$('[data-cam]').forEach(b => b.addEventListener('click', openCam));
   $('#camShot').addEventListener('click', shoot);
   $('#camClose').addEventListener('click', closeCam);
   $('#camTimer').addEventListener('click', e => { cam.timer = !cam.timer; e.currentTarget.setAttribute('aria-pressed', cam.timer); });
   $('#camFlip').addEventListener('click', async () => { cam.facing = cam.facing === 'user' ? 'environment' : 'user'; try { await startStream(); } catch (e) { toast('Couldn\'t switch camera'); } });
   document.addEventListener('visibilitychange', () => { if (document.hidden && !camEl.hidden) closeCam(); });
-  document.addEventListener('paste', e => {
-    const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith('image/'));
-    if (f) { e.preventDefault(); addPhoto(f, nextSlot()); $('#style-lab').scrollIntoView({ behavior: 'smooth' }); }
-  });
-  $('#emptyUpload').addEventListener('click', () => { pendingAngle = st.angle; });
-  $('#style-lab').addEventListener('keydown', e => { const l = e.target.closest('label.angle, #emptyUpload'); if (l && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); l.click(); } });
-  stage.addEventListener('dragover', e => { e.preventDefault(); });
-  stage.addEventListener('drop', e => { e.preventDefault(); addPhoto(e.dataTransfer.files[0], st.model === 'photo' ? st.angle : 0); });
 
-  $('#angles').addEventListener('click', e => {
-    const b = e.target.closest('.angle'); if (!b) return;
-    const i = +b.dataset.a;
-    if (!st.photos[i]) { pendingAngle = i; return; } // the label opens the picker itself
-    if (st.model !== 'photo') { st.angle = i; setModel('photo'); } else setAngle(i, i > st.angle ? 1 : -1);
-  });
-  $('#modelSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setModel(b.dataset.model); });
-  $('#pickSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.pick = b.dataset.pick; st.target = st.pick; syncUI(); syncSliders(); });
-  $('#targetSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; st.target = b.dataset.target; syncUI(); syncSliders(); });
-  $('#style-lab').addEventListener('click', e => {
-    const s = e.target.closest('.style'); if (!s) return;
-    const kind = s.dataset.kind; st[kind] = s.dataset.id; st.target = kind;
-    $$(`.style[data-kind="${kind}"]`).forEach(b => b.setAttribute('aria-pressed', b === s));
-    renderLayers(kind); syncUI();
-  });
-  $('#shapeChips').innerHTML = Object.keys(SHAPE_TIPS).map(s => `<button type="button" class="chip" data-shape="${s}">${s}</button>`).join('');
-  $('#shapeChips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; st.shape = st.shape === b.dataset.shape ? null : b.dataset.shape; renderStyles(); syncUI(); });
-
-  const setColor = c => { st.color = c; renderLayers(); renderStyles(); $$('#swatches .sw').forEach(b => b.setAttribute('aria-pressed', b.dataset.color === c || (b.classList.contains('custom') && !COLORS.some(x => x[1] === c)))); };
-  $('#swatches').addEventListener('click', e => { const b = e.target.closest('.sw[data-color]'); if (b) setColor(b.dataset.color); });
-  let colorRaf;
-  $('#swatches').addEventListener('input', e => { if (e.target.id !== 'colorIn') return; cancelAnimationFrame(colorRaf); const v = e.target.value; colorRaf = requestAnimationFrame(() => setColor(v)); });
-
-  const slide = (id, fn) => { const el = $(id); el.addEventListener('input', () => { stage.classList.add('dragging'); fn(+el.value); applyT(); }); el.addEventListener('change', () => stage.classList.remove('dragging')); };
-  slide('#sSize', v => { const c = cur(); if (c) c.s = v / 100; });
-  slide('#sRot', v => { const c = cur(); if (c) c.r = v; });
-  slide('#sBlend', v => { st.opacity = v / 100; });
-  $('#btnFlip').onclick = () => { const c = cur(); if (c) { c.f *= -1; applyT(); } };
-  $('#btnCenter').onclick = () => { const c = cur(); if (c) { c.x = 0; c.y = 0; c.r = 0; applyT(); } };
-  $('#btnReset').onclick = () => { ['hair', 'beard', 'photo'].forEach(k => st.t[k][st.angle] = T0()); st.opacity = 1; applyT(); toast('Reset this view'); };
-  $('#btnSpin').onclick = () => {
-    if (st.mode === 'spin') { st.mode = 'adjust'; stopAuto(); }
-    else if (st.model === 'photo' && nPhotos() >= 2) st.mode = 'spin';
-    else { toast('Upload at least two angles (e.g. front and side) to use 360° spin'); return; }
-    stage.classList.remove('touched'); syncUI();
-  };
-  $('#btnAuto').onclick = () => { if (st.timer) { stopAuto(); return; } if (!step(1)) return; st.timer = setInterval(() => step(1), 1100); syncUI(); };
-  const before = $('#btnBefore');
-  const bOn = e => { e.preventDefault(); stage.classList.add('before'); }, bOff = () => stage.classList.remove('before');
-  before.addEventListener('pointerdown', bOn); ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => before.addEventListener(ev, bOff));
-  before.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') bOn(e); });
-  before.addEventListener('keyup', bOff);
-
-  // ---------- Drag / pinch / rotate on stage ----------
-  const ptrs = new Map(); let start = null;
-  const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y), ang = (a, b) => Math.atan2(b.y - a.y, b.x - a.x);
-  const begin = () => { const c = cur(); start = { v: c ? { ...c } : null, pts: [...ptrs.values()].map(p => ({ ...p })), sx: [...ptrs.values()][0]?.x }; };
-  stage.addEventListener('pointerdown', e => {
-    if (e.target.closest('button, input, label') || !camEl.hidden) return;
-    stopAuto(); stage.classList.add('touched', 'dragging');
-    stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); begin();
-  });
-  stage.addEventListener('pointermove', e => {
-    if (!ptrs.has(e.pointerId) || !start) return;
-    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    const pts = [...ptrs.values()], rect = stage.getBoundingClientRect();
-    if (st.mode === 'spin') { const dx = pts[0].x - start.sx; if (Math.abs(dx) > Math.max(36, rect.width / 8)) { step(dx > 0 ? -1 : 1); start.sx = pts[0].x; } return; }
-    const v = cur(); if (!v || !start.v) return;
-    if (pts.length === 1 && start.pts.length === 1) {
-      v.x = start.v.x + (pts[0].x - start.pts[0].x) / rect.width * 100;
-      v.y = start.v.y + (pts[0].y - start.pts[0].y) / rect.height * 100;
-    } else if (pts.length >= 2 && start.pts.length >= 2) {
-      v.s = Math.min(3, Math.max(.3, start.v.s * dist(pts[0], pts[1]) / dist(start.pts[0], start.pts[1])));
-      v.r = start.v.r + (ang(pts[0], pts[1]) - ang(start.pts[0], start.pts[1])) * 180 / Math.PI;
-    }
-    applyT();
-  });
-  const end = e => { ptrs.delete(e.pointerId); if (!ptrs.size) { stage.classList.remove('dragging'); start = null; } else begin(); };
-  ['pointerup', 'pointercancel'].forEach(ev => stage.addEventListener(ev, end));
-  stage.addEventListener('wheel', e => { if (st.mode === 'spin' || !camEl.hidden) return; const v = cur(); if (!v) return; e.preventDefault(); v.s = Math.min(3, Math.max(.3, v.s * (e.deltaY < 0 ? 1.05 : .95))); stage.classList.add('touched'); applyT(); }, { passive: false });
-  stage.addEventListener('keydown', e => {
-    if (st.mode === 'spin' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.preventDefault(); step(e.key === 'ArrowRight' ? 1 : -1); return; }
-    const v = cur(); if (!v) return;
-    const k = { ArrowLeft: () => v.x -= 1, ArrowRight: () => v.x += 1, ArrowUp: () => v.y -= 1, ArrowDown: () => v.y += 1, '+': () => v.s = Math.min(3, v.s * 1.05), '=': () => v.s = Math.min(3, v.s * 1.05), '-': () => v.s = Math.max(.3, v.s * .95), '[': () => v.r -= 2, ']': () => v.r += 2 }[e.key];
-    if (k) { e.preventDefault(); k(); applyT(); }
-  });
-
-  // ---------- Save look (composited on a canvas, all in the browser) ----------
-  const load = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
-  const svgURL = s => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
-  const label = () => { const h = byId(HAIR, st.hair).name, b = byId(BEARD, st.beard).name; return st.beard === 'none' ? h : st.hair === 'none' ? b : `${h} + ${b}`; };
-  async function compose() {
-    const N = 900, cv = document.createElement('canvas'); cv.width = cv.height = N;
-    const x = cv.getContext('2d'), a = st.angle;
-    const place = v => { x.translate(N / 2 + v.x / 100 * N, N / 2 + v.y / 100 * N); x.rotate(v.r * Math.PI / 180); x.scale(v.s * v.f, v.s); };
-    x.fillStyle = '#e9dcc0'; x.fillRect(0, 0, N, N);
-    if (st.model === 'photo' && st.photos[a]) {
-      const img = await load(st.photos[a]), sc = Math.max(N / img.naturalWidth, N / img.naturalHeight);
-      x.save(); place(st.t.photo[a]); x.drawImage(img, -img.naturalWidth * sc / 2, -img.naturalHeight * sc / 2, img.naturalWidth * sc, img.naturalHeight * sc); x.restore();
-    } else x.drawImage(await load(svgURL(demoFace(st.model, st.tone))), 0, 0, N, N);
-    for (const [k, list] of [['beard', BEARD], ['hair', HAIR]]) {
-      if (k === 'beard' && a === 2) continue;
-      const s = styleSVG(list, st[k]); if (!s) continue;
-      const img = await load(svgURL(s));
-      x.save(); x.globalAlpha = st.opacity; place(st.t[k][a]);
-      x.shadowColor = 'rgba(0,0,0,.28)'; x.shadowBlur = 8; x.shadowOffsetY = 4;
-      x.drawImage(img, -N / 2, -N / 2, N, N); x.restore();
-    }
-    x.fillStyle = 'rgba(31,42,68,.9)'; x.fillRect(0, N - 64, N, 64);
-    x.textBaseline = 'middle'; x.fillStyle = '#f4ead5'; x.font = '600 26px "Work Sans", sans-serif'; x.fillText(label(), 24, N - 32);
-    x.textAlign = 'right'; x.fillStyle = '#d4b26a'; x.font = '28px "Alfa Slab One", serif'; x.fillText("Wyatt's", N - 24, N - 32);
-    return cv.toDataURL('image/jpeg', .9);
-  }
-  $('#btnSave').onclick = async () => {
-    const b = $('#btnSave'); b.disabled = true;
-    try { looks.unshift({ url: await compose(), label: label() }); if (looks.length > 8) looks.pop(); renderLooks(); toast('Look saved. Compare below'); }
-    catch (err) { toast('Sorry, that look could not be saved'); }
-    b.disabled = false;
-  };
-  $('#looks').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { looks.splice(+b.dataset.rm, 1); renderLooks(); } });
-
-  // ---------- Init ----------
-  renderTones(); renderSwatches(); renderStyles(); renderBase(); renderLayers(); renderAngles(); renderLooks(); syncUI();
+  render(); renderLooks();
 })();
 </script>
 <script>
