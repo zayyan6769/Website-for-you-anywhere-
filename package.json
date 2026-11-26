@@ -1,0 +1,13 @@
+{
+  "name": "wyatts-barbershop-site",
+  "private": true,
+  "type": "module",
+  "description": "One-page website concept for Wyatt's Barbershop. index.html is the site; this file only builds the inlined 3D intro.",
+  "scripts": {
+    "build": "node tools/build-intro.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0",
+    "three": "0.160.0"
+  }
+}

@@ -28,3 +28,12 @@ Setup (Netlify)
    `GEMINI_IMAGE_MODEL` to switch models.
 4. Redeploy. Opening `index.html` straight from a computer or phone can't reach the AI;
    the page says so in the chat.
+
+## 3D walk-in intro
+The page opens on a 3D storefront; scrolling opens the door, walks into the shop and
+stops at a barber chair with an "Add your picture" prompt that leads to the AI Style Lab.
+
+- Source: `src/intro3d.js` (Three.js r160).
+- It is bundled and inlined into `index.html`, so it works with no internet connection
+  (the downloaded file still plays the walk-through).
+- After editing `src/intro3d.js`: `npm install` then `npm run build`.
