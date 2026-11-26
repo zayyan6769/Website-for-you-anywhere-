@@ -429,6 +429,46 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 #quick .chip{text-transform:none;font-size:.74rem}
 .look.on{outline:2px solid var(--red)}
 .look-view{all:unset;cursor:pointer;display:block}
+/* ===== 3D hero ===== */
+.hero{text-align:left}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(16px,3vw,40px);align-items:center}
+.hero-copy .hero-badge{margin:0 0 12px;width:clamp(96px,11vw,130px)}
+.hero-copy .hero-rating{margin:0 0 16px}
+.hero-copy .eyebrow{justify-content:flex-start}
+.hero-copy .eyebrow::before{display:none}
+.hero h1{font-size:clamp(2.6rem,7vw,5.4rem)}
+.hero-copy .tagline{margin-left:0}
+.hero-copy .hero-cta{justify-content:flex-start}
+.hero-stage{position:relative;width:100%;aspect-ratio:1;max-height:600px;touch-action:pan-y;cursor:grab}
+.hero-stage.grabbing{cursor:grabbing}
+.hero-stage canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease;outline:none}
+.hero-stage.ready canvas{opacity:1}
+.stage-fallback{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .8s}
+.stage-fallback .pole{--w:44px;height:72%}
+.hero-stage.ready .stage-fallback{opacity:0}
+.drag-hint{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);margin:0;background:rgba(31,42,68,.85);color:var(--cream);font-size:.72rem;font-weight:600;letter-spacing:.06em;padding:6px 12px;border-radius:999px;opacity:0;transition:opacity .6s;pointer-events:none;white-space:nowrap}
+.hero-stage.ready .drag-hint{opacity:1}
+.hero-stage.spun .drag-hint{opacity:0}
+@media (max-width:860px){
+  .hero{text-align:center}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-copy .hero-badge,.hero-copy .hero-rating{margin-inline:auto}
+  .hero-copy .hero-rating{display:flex;width:max-content;max-width:100%}
+  .hero-copy .eyebrow,.hero-copy .hero-cta{justify-content:center}
+  .hero-copy .eyebrow::before{display:block}
+  .hero-copy .tagline{margin-inline:auto}
+  .hero-stage{max-width:460px;margin:-8px auto 0;aspect-ratio:1.05}
+  .hero-copy .hero-badge{width:84px;margin-bottom:8px}
+  .hero-copy .hero-rating{padding:6px 14px;margin-bottom:12px}
+  .hero-copy .hero-rating .score{font-size:1.3rem}
+  .hero .est{display:none}
+}
+@media (max-width:860px) and (min-width:0px){
+  .hero{padding-top:24px}
+}
+/* sections tilt up into place in 3D as they scroll in */
+.reveal:not(.left):not(.right):not(.wipe){transform:perspective(1000px) translateY(36px) rotateX(14deg);transform-origin:50% 100%}
+.reveal.in:not(.left):not(.right):not(.wipe){transform:none}
 .notice{background:#fff6dc;border:1.5px solid var(--brass);border-radius:var(--radius);padding:12px 14px;margin-top:12px;font-size:.88rem}
 .notice ol{margin:6px 0;padding-left:20px}
 .notice small{color:var(--muted)}
@@ -507,8 +547,8 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-bg" aria-hidden="true" data-parallax=".35"><div class="rays"></div></div>
-    <div class="poles" aria-hidden="true" data-parallax=".15"><div class="pole"></div><div class="pole"></div></div>
-    <div class="wrap">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
       <svg class="hero-badge reveal" viewBox="0 0 200 200" role="img" aria-label="Wyatt's Barbershop – Austin, TX emblem"><use href="#badge"/></svg>
       <a class="rating hero-rating reveal" href="https://www.google.com/maps/search/?api=1&query=Wyatt%27s+Barbershop+3401+E+7th+St+Austin+TX" target="_blank" rel="noopener" aria-label="Rated 4.8 out of 5 stars on Google. See reviews">
         <svg class="g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.2l7.8 6.1C12.3 13.5 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 7l7.4 5.7c4.3-4 6.9-9.9 6.9-17.2z"/><path fill="#FBBC05" d="M10.4 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.8-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.8-5.8l-7.4-5.7c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.7-4-13.6-9.8l-7.8 6.1C6.6 42.6 14.6 48 24 48z"/></svg>
@@ -523,6 +563,12 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
         <a class="btn ghost" href="#style-lab">Try a Style</a>
       </div>
       <div class="est reveal">Walk-ins welcome · Cash preferred</div>
+      </div>
+      <div class="hero-stage" id="hero3d">
+        <div class="stage-fallback" aria-hidden="true"><div class="pole"></div></div>
+        <canvas id="heroCanvas" role="img" aria-label="3D model of a vintage red leather barber chair beside a spinning barber pole, with scissors, a comb and a straight razor floating around it"></canvas>
+        <p class="drag-hint" aria-hidden="true">⟲ Drag to spin the chair</p>
+      </div>
     </div>
   </section>
 
@@ -1092,6 +1138,177 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     btn.lastChild.textContent = n ? `Book with ${n}` : 'Book now';
   }));
 })();
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+/* ===== 3D hero: barber chair, pole and tools (Three.js). If WebGL or the CDN is unavailable, the CSS pole stays. ===== */
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const host = document.getElementById('hero3d'), canvas = document.getElementById('heroCanvas');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer = null;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { console.warn('3D hero disabled:', e); }
+if (renderer) build();
+
+function build() {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+  const target = new THREE.Vector3(0, 1.15, 0);
+  const DIST = 8.2;
+  camera.position.set(0, 2.3, DIST);
+
+  // Lights: warm key with soft shadows, brass rim, gentle fill
+  scene.add(new THREE.HemisphereLight(0xfff1dc, 0x3a2a1a, 0.55));
+  const key = new THREE.DirectionalLight(0xffe2b8, 2.4);
+  key.position.set(3, 6, 4); key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  Object.assign(key.shadow.camera, { left: -3.5, right: 3.5, top: 3.5, bottom: -3.5, near: 1, far: 15 });
+  key.shadow.radius = 5; key.shadow.bias = -0.0005;
+  scene.add(key);
+  const rim = new THREE.PointLight(0xd4b26a, 14, 12); rim.position.set(-3, 3.2, -2); scene.add(rim);
+
+  // Materials
+  const leather = new THREE.MeshPhysicalMaterial({ color: 0x9b1f26, roughness: 0.42, clearcoat: 0.5, clearcoatRoughness: 0.35, sheen: 0.4, sheenColor: 0xff8a80 });
+  const chrome = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.12 });
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc9a253, metalness: 1, roughness: 0.25 });
+  const navy = new THREE.MeshStandardMaterial({ color: 0x1f2a44, metalness: 0.3, roughness: 0.45 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x5a3a22, roughness: 0.45 });
+  const ivory = new THREE.MeshStandardMaterial({ color: 0xf1e6cf, roughness: 0.35 });
+  const rb = (w, h, d, r = 0.06) => new RoundedBoxGeometry(w, h, d, 4, r);
+  const mesh = (g, m, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); o.castShadow = o.receiveShadow = true; return o; };
+  const canvasTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+
+  // Classic black & white checker floor on a brass-rimmed platform
+  const checker = canvasTex(512, 512, (x, w) => { const n = 8, s = w / n; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { x.fillStyle = (i + j) % 2 ? '#f1e6cf' : '#1d1a16'; x.fillRect(i * s, j * s, s, s); } });
+  checker.wrapS = checker.wrapT = THREE.RepeatWrapping; checker.repeat.set(2, 2);
+  const floorTop = new THREE.MeshStandardMaterial({ map: checker, roughness: 0.3, metalness: 0.05 });
+  const floor = mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.14, 72), [brass, floorTop, brass], 0, -0.07, 0);
+  floor.castShadow = false; scene.add(floor);
+
+  // Vintage barber chair
+  const chair = new THREE.Group();
+  chair.add(mesh(new THREE.CylinderGeometry(0.55, 0.62, 0.1, 48), chrome, 0, 0.05, 0));
+  chair.add(mesh(new THREE.CylinderGeometry(0.13, 0.17, 0.56, 32), chrome, 0, 0.36, 0));
+  chair.add(mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.08, 32), navy, 0, 0.66, 0));
+  chair.add(mesh(rb(1.06, 0.24, 0.96, 0.1), leather, 0, 0.82, 0));
+  const back = mesh(rb(0.98, 1.06, 0.2, 0.1), leather, 0, 1.44, -0.46); back.rotation.x = -0.16; chair.add(back);
+  const tuft = new THREE.MeshStandardMaterial({ color: 0x5c1216, roughness: 0.4 });
+  for (const bx of [-0.25, 0, 0.25]) for (const by of [-0.22, 0.12, 0.42]) back.add(mesh(new THREE.SphereGeometry(0.026, 12, 8), tuft, bx, by, 0.1));
+  const trim = mesh(rb(1.02, 0.05, 0.22, 0.02), chrome, 0, 0.55, 0); back.add(trim);
+  chair.add(mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.26, 12), chrome, 0, 2.0, -0.58));
+  chair.add(mesh(rb(0.54, 0.24, 0.16, 0.08), leather, 0, 2.15, -0.6));
+  for (const s of [-1, 1]) {
+    chair.add(mesh(rb(0.16, 0.09, 0.88, 0.04), wood, s * 0.62, 1.13, 0.02));
+    chair.add(mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.3, 12), chrome, s * 0.62, 0.98, 0.32));
+    chair.add(mesh(rb(0.04, 0.3, 0.92, 0.02), chrome, s * 0.545, 0.82, 0));
+    const strut = mesh(rb(0.05, 0.05, 0.56, 0.02), chrome, s * 0.3, 0.55, 0.6); strut.rotation.x = 0.75; chair.add(strut);
+  }
+  chair.add(mesh(rb(0.72, 0.04, 0.24, 0.02), chrome, 0, 0.32, 0.8));
+  chair.rotation.y = -0.6;
+  scene.add(chair);
+
+  // Barber pole: glass tube with a moving stripe texture, brass caps and a glowing globe
+  const stripes = canvasTex(256, 512, (x, w, h) => {
+    x.fillStyle = '#fbf6ec'; x.fillRect(0, 0, w, h);
+    const band = (y, color) => { x.fillStyle = color; x.beginPath(); x.moveTo(0, y); x.lineTo(w, y - 128); x.lineTo(w, y - 128 + 44); x.lineTo(0, y + 44); x.closePath(); x.fill(); };
+    for (let y = -256; y < h + 256; y += 128) { band(y, '#a3242a'); band(y + 64, '#1f2a44'); }
+  });
+  stripes.wrapS = stripes.wrapT = THREE.RepeatWrapping;
+  const pole = new THREE.Group(); pole.position.set(1.75, 0, -0.7);
+  pole.add(mesh(new THREE.CylinderGeometry(0.3, 0.34, 0.08, 32), brass, 0, 0.04, 0));
+  pole.add(mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.5, 16), brass, 0, 0.32, 0));
+  pole.add(mesh(new THREE.CylinderGeometry(0.25, 0.22, 0.14, 32), brass, 0, 0.6, 0));
+  pole.add(mesh(new THREE.CylinderGeometry(0.165, 0.165, 1.5, 48, 1, true), new THREE.MeshStandardMaterial({ map: stripes, roughness: 0.35 }), 0, 1.42, 0));
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 1.5, 48, 1, true), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.04, metalness: 0, transparent: true, opacity: 0.28, clearcoat: 1, side: THREE.DoubleSide }));
+  glass.position.y = 1.42; pole.add(glass);
+  pole.add(mesh(new THREE.CylinderGeometry(0.22, 0.25, 0.14, 32), brass, 0, 2.24, 0));
+  pole.add(mesh(new THREE.SphereGeometry(0.15, 32, 16), new THREE.MeshStandardMaterial({ color: 0xfff6e0, emissive: 0xffe2a8, emissiveIntensity: 1.6, roughness: 0.2 }), 0, 2.42, 0));
+  const glow = new THREE.PointLight(0xffd79a, 3, 3); glow.position.set(0, 2.45, 0.2); pole.add(glow);
+  scene.add(pole);
+
+  // Floating tools
+  const scissors = new THREE.Group();
+  for (const s of [-1, 1]) {
+    const arm = new THREE.Group(); arm.rotation.z = s * 0.22;
+    arm.add(mesh(rb(0.62, 0.07, 0.02, 0.01), chrome, 0.26, 0, s * 0.012));
+    const ring = mesh(new THREE.TorusGeometry(0.1, 0.024, 12, 32), brass, -0.17, 0, s * 0.012); arm.add(ring);
+    scissors.add(arm);
+  }
+  scissors.add(mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.06, 12).rotateX(Math.PI / 2), brass, 0.02, 0, 0));
+  const comb = new THREE.Group();
+  comb.add(mesh(rb(0.9, 0.08, 0.03, 0.015), navy, 0, 0.05, 0));
+  const teeth = new THREE.InstancedMesh(new THREE.BoxGeometry(0.016, 0.15, 0.024), navy, 26);
+  const m4 = new THREE.Matrix4();
+  for (let i = 0; i < 26; i++) { m4.makeTranslation(-0.42 + i * 0.0336, -0.06, 0); teeth.setMatrixAt(i, m4); }
+  teeth.castShadow = true; comb.add(teeth);
+  const razor = new THREE.Group();
+  razor.add(mesh(rb(0.55, 0.12, 0.018, 0.01), chrome, 0.28, 0.02, 0));
+  razor.add(mesh(rb(0.62, 0.085, 0.045, 0.03), ivory, -0.24, -0.02, 0));
+  razor.add(mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.07, 12).rotateX(Math.PI / 2), brass, 0, 0, 0));
+  const tools = [
+    { o: scissors, p: new THREE.Vector3(-1.65, 2.25, 0.5), ph: 0, rz: 0.5 },
+    { o: comb, p: new THREE.Vector3(-1.55, 1.05, 1.05), ph: 2.1, rz: -0.35 },
+    { o: razor, p: new THREE.Vector3(1.15, 2.75, 0.9), ph: 4.2, rz: 0.25 }
+  ];
+  tools.forEach(t => { t.o.position.copy(t.p); t.o.rotation.z = t.rz; scene.add(t.o); });
+
+  // Size to the container
+  const resize = () => {
+    const w = host.clientWidth, h = host.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w < 480 ? 38 : 34; camera.updateProjectionMatrix();
+  };
+  new ResizeObserver(resize).observe(host); resize();
+
+  // Drag to spin the chair; the camera follows the pointer a little
+  let drag = null, mx = 0, my = 0, spin = 0;
+  canvas.addEventListener('pointerdown', e => { drag = { x: e.clientX, yaw: chair.rotation.y }; canvas.setPointerCapture(e.pointerId); host.classList.add('grabbing', 'spun'); });
+  canvas.addEventListener('pointermove', e => {
+    const r = host.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width - 0.5; my = (e.clientY - r.top) / r.height - 0.5;
+    if (drag) { const yaw = drag.yaw + (e.clientX - drag.x) * 0.012; spin = yaw - chair.rotation.y; chair.rotation.y = yaw; }
+  });
+  const release = () => { drag = null; host.classList.remove('grabbing'); };
+  canvas.addEventListener('pointerup', release); canvas.addEventListener('pointercancel', release);
+  canvas.addEventListener('pointerleave', () => { if (!drag) { mx = 0; my = 0; } });
+
+  // Only animate while the hero is on screen
+  let visible = true, raf = 0;
+  const clock = new THREE.Clock();
+  const frame = () => {
+    raf = 0; if (!visible) return;
+    const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+    if (!drag) { spin *= 0.94; chair.rotation.y += spin + (reduce ? 0 : dt * 0.3); }
+    if (!reduce) {
+      stripes.offset.y = (stripes.offset.y + dt * 0.22) % 1;
+      tools.forEach(k => { k.o.position.y = k.p.y + Math.sin(t * 1.1 + k.ph) * 0.12; k.o.rotation.y = Math.sin(t * 0.6 + k.ph) * 0.6; k.o.rotation.z = k.rz + Math.sin(t * 0.8 + k.ph) * 0.12; });
+      const a = Math.sin(t * 2.2) * 0.5 + 0.5; scissors.children[0].rotation.z = 0.22 + a * 0.12; scissors.children[1].rotation.z = -0.22 - a * 0.12;
+    }
+    const p = Math.min(1, window.scrollY / Math.max(1, host.offsetTop + host.offsetHeight));
+    camera.position.x += (mx * 1.2 - camera.position.x) * 0.05;
+    camera.position.y += (2.3 - my * 0.8 + p * 1.4 - camera.position.y) * 0.05;
+    camera.position.z += (DIST + p * 1.6 - camera.position.z) * 0.05;
+    camera.lookAt(target);
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(frame);
+  };
+  const start = () => { if (!raf) { clock.getDelta(); raf = requestAnimationFrame(frame); } };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); }).observe(host);
+  document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) start(); });
+  renderer.render(scene, camera);
+  host.classList.add('ready');
+  start();
+}
 </script>
 </body>
 </html>
