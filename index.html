@@ -429,6 +429,9 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
 #quick .chip{text-transform:none;font-size:.74rem}
 .look.on{outline:2px solid var(--red)}
 .look-view{all:unset;cursor:pointer;display:block}
+.notice{background:#fff6dc;border:1.5px solid var(--brass);border-radius:var(--radius);padding:12px 14px;margin-top:12px;font-size:.88rem}
+.notice ol{margin:6px 0;padding-left:20px}
+.notice small{color:var(--muted)}
 </style>
 </head>
 <body class="no-js">
@@ -628,6 +631,11 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
               <button type="button" class="tool primary" data-cam><svg width="16" height="16"><use href="#i-camera"/></svg>Live camera</button>
               <label class="tool" id="btnUpload" for="fileIn" tabindex="0" role="button"><svg width="16" height="16"><use href="#i-upload"/></svg>Upload photo</label>
               <label class="tool" id="btnSelfie" for="selfieIn" tabindex="0" role="button">Phone camera</label>
+            </div>
+            <div class="notice" id="localNotice" hidden>
+              <b>📱 Using your phone? Here's what works:</b>
+              <ol><li>Take a selfie with your phone's normal <b>Camera</b> app.</li><li>Come back here, tap <b>Upload photo</b> and pick it from your gallery.</li></ol>
+              <small>This page was opened as a file, not a website, so your phone blocks the live camera here. It works once the site is online.</small>
             </div>
             <p class="tip">Best results: good light, look at the camera, whole head in the frame. You can also drag a photo onto the preview or paste one (Ctrl/⌘+V).</p>
             <input type="file" id="fileIn" class="file-in" accept="image/*,.heic,.heif" tabindex="-1">
@@ -1032,11 +1040,24 @@ h2{font-size:clamp(1.8rem,4.4vw,2.6rem)}
     try { await video.play(); } catch (e) {}
   }
   async function openCam() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Live camera isn\'t available here. Open the page in Chrome or Safari, or use Upload photo'); return; }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showLocalHelp(); toast('The live camera is blocked on this page. Take a selfie with your Camera app, then tap Upload photo'); return; }
     camEl.hidden = false; stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     try { await startStream(); }
-    catch (e) { camEl.hidden = true; toast(e && e.name === 'NotAllowedError' ? 'Camera access was blocked. Allow the camera for this page, then try again' : 'Couldn\'t start the camera. Try Upload photo instead'); }
+    catch (e) {
+      camEl.hidden = true;
+      if (e && e.name === 'NotAllowedError') { showLocalHelp(); toast('Your browser blocked the camera on this page. Take a selfie with your Camera app, then tap Upload photo'); }
+      else toast('Couldn\'t start the camera. Take a selfie with your Camera app, then tap Upload photo');
+    }
   }
+  // Phones block the camera on pages opened as files, and often reload the page while
+  // their camera app is open. Point people to the gallery route, which works everywhere.
+  function showLocalHelp() {
+    $('#localNotice').hidden = false;
+    $$('[data-cam], #btnSelfie').forEach(b => { b.hidden = true; });
+    $('#btnUpload').classList.add('primary');
+  }
+  const isPhone = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  if (!window.isSecureContext || (isPhone && /^(file|content):$/.test(location.protocol))) showLocalHelp();
   const closeCam = () => { stopStream(); camEl.hidden = true; $('#camCount').textContent = ''; };
   async function shoot() {
     if (cam.busy || !video.videoWidth) return; cam.busy = true;
