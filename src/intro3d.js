@@ -30,7 +30,7 @@ function build() {
   renderer.setPixelRatio(DPR);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 0.95;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -180,7 +180,7 @@ function build() {
     rubber: std(0x151515, 0.9),
     white: std(0xf4f1ea, 0.7),
     glass: new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.02, metalness: 0, transparent: true, opacity: 0.12, envMapIntensity: 1.5, side: THREE.DoubleSide, depthWrite: false }),
-    frosted: std(0xfff4dc, 0.3, 0, { emissive: 0xffd9a0, emissiveIntensity: 2.2 }),
+    frosted: std(0xfff4dc, 0.3, 0, { emissive: 0xffd9a0, emissiveIntensity: 1.4 }),
     bulb: std(0xfff6e0, 0.2, 0, { emissive: 0xffe2a8, emissiveIntensity: 3 }),
     plant: std(0x2f6b3a, 0.75), plantLight: std(0x5d8f3c, 0.75),
     terracotta: std(0xa0522d, 0.85)
@@ -419,7 +419,7 @@ function build() {
       add(st, new THREE.CylinderGeometry(0.012, 0.012, 0.2, 8).rotateZ(Math.PI / 2), M.brass, 0.12, 2.55, dz);
       add(st, new THREE.CylinderGeometry(0.07, 0.05, 0.16, 16, 1, true), M.frosted, 0.22, 2.62, dz);
     }
-    const sconce = new THREE.PointLight(0xffd8a0, 3, 3.5, 1.7); sconce.position.set(0.4, 2.6, 0); st.add(sconce);
+    const sconce = new THREE.PointLight(0xffd8a0, 0.7, 3.5, 1.8); sconce.position.set(0.4, 2.6, 0); st.add(sconce);
     // tools on the counter
     const jarX = 0.3, top = 0.985;
     add(st, new THREE.CylinderGeometry(0.075, 0.075, 0.3, 24), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.02, transparent: true, opacity: 0.25, clearcoat: 1 }), jarX, top + 0.15, -0.5);
@@ -504,7 +504,7 @@ function build() {
     add(wa, rb(0.04, 0.62, 0.5, 0.01), M.black, -0.02, 2.2 + (i % 2) * 0.12, dz);
     const p = add(wa, new THREE.PlaneGeometry(0.42, 0.54), new THREE.MeshStandardMaterial({ map: photo(i + 5), roughness: 0.6 }), -0.045, 2.2 + (i % 2) * 0.12, dz); p.rotation.y = -Math.PI / 2;
   });
-  const benchLight = new THREE.PointLight(0xffd8a0, 4, 5, 1.6); benchLight.position.set(W - 1.2, 2.6, -4.9); scene.add(benchLight);
+  const benchLight = new THREE.PointLight(0xffd8a0, 1.2, 5, 1.8); benchLight.position.set(W - 1.2, 2.6, -4.9); scene.add(benchLight);
 
   // ---------- back wall: neon, wall clock, shelf of products, pole ----------
   const neon = tex(1024, 320, (x, w, h) => {
@@ -513,7 +513,7 @@ function build() {
     x.shadowBlur = 0; x.lineWidth = 6; x.strokeStyle = '#ffd6c8'; x.strokeText("Wyatt's", w / 2, 220);
   });
   add(backWall, new THREE.PlaneGeometry(2.4, 0.75), new THREE.MeshBasicMaterial({ map: neon, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), 0, 2.75, 0.06);
-  const neonLight = new THREE.PointLight(0xff4a3a, 3, 4, 1.8); neonLight.position.set(0, 2.75, Z0 - D + 0.5); scene.add(neonLight);
+  const neonLight = new THREE.PointLight(0xff4a3a, 1.2, 4, 1.8); neonLight.position.set(0, 2.75, Z0 - D + 0.5); scene.add(neonLight);
   // shelf with products
   add(backWall, rb(2.2, 0.05, 0.28, 0.015), M.walnut, 0, 1.85, 0.16);
   for (const sx of [-0.95, 0.95]) add(backWall, rb(0.04, 0.16, 0.24, 0.01), M.brass, sx, 1.76, 0.14);
@@ -553,17 +553,17 @@ function build() {
     add(pg, new THREE.CylinderGeometry(0.006, 0.006, 0.75, 6), M.black, 0, -0.4, 0);
     add(pg, new THREE.CylinderGeometry(0.06, 0.08, 0.06, 16), M.agedBrass, 0, -0.8, 0);
     add(pg, new THREE.SphereGeometry(0.15, 24, 18), M.frosted, 0, -0.95, 0);
-    const l = new THREE.PointLight(0xffd8a0, 8, 7, 1.7); l.position.set(-W + 1.65, H - 1.1, z); scene.add(l);
+    const l = new THREE.PointLight(0xffd8a0, 2.2, 7, 1.8); l.position.set(-W + 1.65, H - 1.1, z); scene.add(l);
   }
 
   // ---------- lighting ----------
-  scene.add(new THREE.HemisphereLight(0xfff0dc, 0x2a1d12, 0.35));
+  scene.add(new THREE.HemisphereLight(0xfff0dc, 0x2a1d12, 0.18));
   const moon = new THREE.DirectionalLight(0x9fb3d9, 0.5); moon.position.set(-6, 8, 10); scene.add(moon);
-  const key = new THREE.SpotLight(0xffe2b8, 70, 12, 1.15, 0.85, 1.6);
+  const key = new THREE.SpotLight(0xffe2b8, 16, 12, 1.15, 0.85, 1.8);
   key.position.set(0.6, H - 0.1, -3.2); key.target.position.set(-1.6, 0, -4.6);
   key.castShadow = true; key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048); key.shadow.bias = -0.0003; key.shadow.normalBias = 0.02; key.shadow.radius = 4;
   scene.add(key, key.target);
-  const windowSpill = new THREE.PointLight(0xffd29a, 6, 9, 1.4); windowSpill.position.set(0, 2.2, -1.2); scene.add(windowSpill);
+  const windowSpill = new THREE.PointLight(0xffd29a, 1.2, 9, 1.8); windowSpill.position.set(0, 2.2, -1.2); scene.add(windowSpill);
 
   // shadows on solid meshes only
   scene.traverse(o => { if (o.isMesh && !shadowless.has(o.material) && !(o.material && o.material.transparent) && !o.isReflector) { o.castShadow = true; o.receiveShadow = true; } });
@@ -572,7 +572,7 @@ function build() {
   // ---------- post-processing: subtle bloom on lamps and neon ----------
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.45, 0.5, 0.88);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.35, 0.45, 0.97);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
